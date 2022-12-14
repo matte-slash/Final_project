@@ -1,3 +1,3 @@
 ##FINAL PROJECT
 
-![alt text]SCHEMA.png
+![alt text](SCHEMA.png)
