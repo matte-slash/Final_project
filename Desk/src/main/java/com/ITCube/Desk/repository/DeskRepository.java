@@ -1,7 +1,7 @@
 package com.ITCube.Desk.repository;
 
 
-import com.ITCube.Data.model.Slot;
+import com.ITCube.Data.model.Desk;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface SlotRepository extends CrudRepository<Slot,Long> {
+public interface DeskRepository extends CrudRepository<Desk,Long> {
 }
