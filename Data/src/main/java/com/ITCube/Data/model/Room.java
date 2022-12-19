@@ -24,8 +24,6 @@ public class Room {
     @Column(name="total_desk", nullable = false)
     private int totalDesk;
 
-    @OneToMany(mappedBy = "room", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-    private List<Desk> desks;
 
     public Room(){}
 
@@ -33,7 +31,6 @@ public class Room {
         this.name = name;
         this.address = address;
         this.totalDesk = totalDesk;
-        this.desks = new ArrayList<>();
     }
 
     @Override
@@ -43,7 +40,6 @@ public class Room {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", totalDesk=" + totalDesk +
-                ", desks=" + desks +
                 '}';
     }
 
@@ -77,13 +73,5 @@ public class Room {
 
     public void setTotalDesk(int totalDesk) {
         this.totalDesk = totalDesk;
-    }
-
-    public List<Desk> getDesks() {
-        return desks;
-    }
-
-    public void setDesks(List<Desk> desks) {
-        this.desks = desks;
     }
 }

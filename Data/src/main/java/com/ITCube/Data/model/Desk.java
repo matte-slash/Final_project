@@ -1,6 +1,8 @@
 package com.ITCube.Data.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Matteo Rosso

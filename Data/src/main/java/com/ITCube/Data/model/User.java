@@ -29,6 +29,14 @@ public class User {
         this.bookings=new ArrayList<>();
     }
 
+    public void addBooking(Booking booking){
+        bookings.add(booking);
+    }
+
+    public void removeBooking(Booking booking){
+        bookings.remove(booking);
+    }
+
     @Override
     public String toString() {
         return "User{" +

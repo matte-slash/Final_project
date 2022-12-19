@@ -20,7 +20,6 @@ public interface RoomService {
 
     Room updateRoom(long id, Room room);
 
-    void deleteAllRooms();
 
 
 }

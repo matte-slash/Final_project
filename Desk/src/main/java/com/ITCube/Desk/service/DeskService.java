@@ -4,7 +4,7 @@ import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 
 
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -13,19 +13,18 @@ import java.util.List;
 
 public interface DeskService {
 
-    List<Desk> findAlSlot();
+    List<Desk> findAlDesk();
 
-    List<Desk> findAllSlotByRoom(Room room);
-
+    List<Desk> findAllDeskByRoom(Room room);
 
     Desk findDeskById(long id);
 
-    Desk createSlot(Desk slot);
+    List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end);
 
-    void deleteSlot(Desk slot);
+    Desk createDesk(Desk desk);
 
-    void deleteAllSlot();
+    void deleteDesk(long id);
 
-    Desk updateSlot(long id, Desk slot);
+    Desk updateDesk(long id, Desk desk);
 
 }
