@@ -110,7 +110,8 @@ class BookingServiceUnitTest {
         verifyNoMoreInteractions(rep);
     }
 
-    void findByIdFailTest(){
+    @Test
+    void findBookingByIdFailTest(){
         // When
         when(rep.findById(anyLong())).thenThrow(BookingNotFoundException.class);
 
