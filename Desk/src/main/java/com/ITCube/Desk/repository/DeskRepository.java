@@ -18,8 +18,8 @@ import java.util.List;
 public interface DeskRepository extends JpaRepository<Desk,Long> {
 
     @Query(value= "select * from desk as d"
-            + "where d.room_id = ?1 ", nativeQuery = true)
-    List<Desk> findDeskByRoom(Room room);
+            + "where d.room_id.id = ?1 ", nativeQuery = true)           // TODO check if it works
+    List<Desk> findDeskByRoom(long roomId);
     @Query(value = "select * from desk as d "
             + "where d.id not in "
             + "("

@@ -15,7 +15,7 @@ public interface DeskService {
 
     List<Desk> findAlDesk();
 
-    List<Desk> findAllDeskByRoom(Room room);
+    List<Desk> findAllDeskByRoom(long roomId);
 
     Desk findDeskById(long id);
 

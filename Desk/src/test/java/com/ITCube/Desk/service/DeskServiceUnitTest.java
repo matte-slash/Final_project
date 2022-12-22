@@ -4,36 +4,57 @@ import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Desk.exception.DeskNotFoundException;
 import com.ITCube.Desk.repository.DeskRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.TestPropertySource;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @author Matteo Rosso
  */
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class DeskServiceUnitTest {
     @Mock
     private DeskRepository rep;
     @Mock
     private Clock clock;
     @InjectMocks
-    private DeskService underTest;
+    private DeskServiceImpl underTest;
+
+    private static final ZonedDateTime NOW= ZonedDateTime.of(
+            2023,
+            6,
+            15,
+            12,
+            30,
+            0,
+            0,
+            ZoneId.of("GMT")
+    );
+
+    @BeforeEach
+    void setUp() {
+        when(clock.getZone()).thenReturn(NOW.getZone());
+        when(clock.instant()).thenReturn(NOW.toInstant());
+    }
 
     @Test
     void findAllDeskTest(){
@@ -58,15 +79,15 @@ public class DeskServiceUnitTest {
         Room room=new Room("Stanza 1", "Via Roma 15", 99);
         Desk d1=new Desk("A1",room);
         Desk d2=new Desk("A2",room);
-        when(rep.findDeskByRoom(any(Room.class))).thenReturn(List.of(d1,d2));
+        when(rep.findDeskByRoom(anyLong())).thenReturn(List.of(d1,d2));
 
         // Action
-        List<Desk> result=underTest.findAllDeskByRoom(any(Room.class));
+        List<Desk> result=underTest.findAllDeskByRoom(anyLong());
 
         // Assert
         assertFalse(result.isEmpty());
         assertThat(result.size(), equalTo(2));
-        verify(rep,times(1)).findDeskByRoom(any(Room.class));
+        verify(rep,times(1)).findDeskByRoom(anyLong());
         verifyNoMoreInteractions(rep);
     }
 
@@ -80,7 +101,7 @@ public class DeskServiceUnitTest {
         Desk result=underTest.findDeskById(anyLong());
 
         // Assert
-        assertFalse(result==null);
+        assertNotNull(result);
         assertThat(result.getDeskName(),equalTo(expected.getDeskName()));
         verify(rep,times(1)).findById(anyLong());
         verifyNoMoreInteractions(rep);
@@ -122,7 +143,7 @@ public class DeskServiceUnitTest {
         when(rep.save(any(Desk.class))).thenReturn(expected);
 
         // Action
-        Desk result= underTest.createDesk(any(Desk.class));
+        Desk result= underTest.createDesk(expected);
 
         // Assert
         assertThat(result.getDeskName(),equalTo(expected.getDeskName()));
@@ -133,12 +154,15 @@ public class DeskServiceUnitTest {
     @Test
     void deleteDeskTest(){
         // When
+        Desk expected=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         doNothing().when(rep).deleteById(anyLong());
 
         // Action
         underTest.deleteDesk(anyLong());
 
         // Assert
+        verify(rep,times(1)).findById(anyLong());
         verify(rep,times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(rep);
     }
@@ -152,7 +176,7 @@ public class DeskServiceUnitTest {
         when(rep.save(any(Desk.class))).thenReturn(new_d);
 
         // Action
-        Desk result=underTest.updateDesk(anyLong(), any(Desk.class));
+        Desk result=underTest.updateDesk(anyLong(), new_d);
 
         // Assert
         assertThat(result.getDeskName(),equalTo(new_d.getDeskName()));
