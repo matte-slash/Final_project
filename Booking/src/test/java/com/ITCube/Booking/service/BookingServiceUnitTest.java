@@ -145,6 +145,28 @@ class BookingServiceUnitTest {
 
     @Test
     void findAllDeskAvailableTest() {
+        // When
+        Desk d1=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Desk d2=new Desk("A2", new Room("Stanza 1","Via Roma 15", 99));
+        LocalDateTime okStart=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        when(rep.findDeskAvailable(okStart,okStart))
+                .thenReturn(List.of(d1,d2));
+
+        // Action
+        List<Desk> result=underTest.findAllDeskAvailable(okStart,okStart);
+
+        // Assert
+        assertFalse(result.isEmpty());
+        assertThat(result.size(), equalTo(2));
+        verify(rep,times(1)).findDeskAvailable(okStart,okStart);
+        verifyNoMoreInteractions(rep);
     }
 
     @Test

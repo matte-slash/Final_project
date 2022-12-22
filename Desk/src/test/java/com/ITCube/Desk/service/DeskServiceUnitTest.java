@@ -4,19 +4,12 @@ import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Desk.exception.DeskNotFoundException;
 import com.ITCube.Desk.repository.DeskRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,31 +23,12 @@ import static org.mockito.Mockito.*;
  */
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 public class DeskServiceUnitTest {
     @Mock
     private DeskRepository rep;
-    @Mock
-    private Clock clock;
     @InjectMocks
     private DeskServiceImpl underTest;
 
-    private static final ZonedDateTime NOW= ZonedDateTime.of(
-            2023,
-            6,
-            15,
-            12,
-            30,
-            0,
-            0,
-            ZoneId.of("GMT")
-    );
-
-    @BeforeEach
-    void setUp() {
-        when(clock.getZone()).thenReturn(NOW.getZone());
-        when(clock.instant()).thenReturn(NOW.toInstant());
-    }
 
     @Test
     void findAllDeskTest(){
@@ -116,25 +90,6 @@ public class DeskServiceUnitTest {
         assertThrows(DeskNotFoundException.class ,()->underTest.findDeskById(anyLong()));
     }
 
-    @Test
-    void findAllDeskAvailableTest(){
-        // When
-        Desk d1=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Desk d2=new Desk("A2", new Room("Stanza 1","Via Roma 15", 99));
-        LocalDateTime start=LocalDateTime.now(clock);
-        LocalDateTime end=LocalDateTime.now(clock);
-        when(rep.findDeskAvailable(start,end))                  //todo see Clock man
-                .thenReturn(List.of(d1,d2));
-
-        // Action
-        List<Desk> result=underTest.findAllDeskAvailable(start,end);
-
-        // Assert
-        assertFalse(result.isEmpty());
-        assertThat(result.size(), equalTo(2));
-        verify(rep,times(1)).findDeskAvailable(start,end);
-        verifyNoMoreInteractions(rep);
-    }
 
     @Test
     void createDeskTest(){

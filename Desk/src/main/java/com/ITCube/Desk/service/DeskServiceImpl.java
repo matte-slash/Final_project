@@ -1,16 +1,13 @@
 package com.ITCube.Desk.service;
 
 import com.ITCube.Data.model.Desk;
-import com.ITCube.Data.model.Room;
 import com.ITCube.Desk.exception.DeskNotFoundException;
-import com.ITCube.Desk.exception.IllegalDateTimeException;
 import com.ITCube.Desk.repository.DeskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +19,7 @@ import java.util.List;
 public class DeskServiceImpl implements DeskService {
 
     private DeskRepository rep;
-    private Clock clock;
+
     @Override
     public List<Desk> findAlDesk() {
         log.info("Find all desk");
@@ -43,14 +40,6 @@ public class DeskServiceImpl implements DeskService {
         return rep.findById(id).orElseThrow(()->new DeskNotFoundException("Desk "+ id + " not found"));
     }
 
-    @Override
-    public List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end) {
-        log.info("Find all desk available");
-        if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock))){
-            throw new IllegalDateTimeException("Date insert error");
-        }
-        return rep.findDeskAvailable(start,end);
-    }
 
     @Override
     public Desk createDesk(Desk desk) {

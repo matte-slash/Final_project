@@ -2,7 +2,6 @@ package com.ITCube.Booking.service;
 
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
-import com.ITCube.Data.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;

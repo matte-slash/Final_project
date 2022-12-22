@@ -49,10 +49,13 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end) {
-        return null;
+        log.info("Find all desk available");
+        if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock))){
+            throw new IllegalDateTimeException("Date insert error");
+        }
+        return rep.findDeskAvailable(start,end);
     }
 
-        //TODO RestTamplate or WebClient?? Can i do it without them??
 
     @Override
     public Booking createBooking(Booking booking) {

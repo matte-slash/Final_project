@@ -73,6 +73,19 @@ class UserServiceUnitTest {
 
     @Test
     void findUserByNameAndBySurname() {
+        // When
+        User expected=new User("Matteo","Rosso","Junior");
+        when(rep.findByFirstNameIgnoreCaseAndLastNameIgnoreCase(anyString(),anyString())).thenReturn(expected);
+
+        // Action
+        User result=underTest.findUserByNameAndBySurname(anyString(),anyString());
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(expected,result);
+        verify(rep,times(1))
+                .findByFirstNameIgnoreCaseAndLastNameIgnoreCase(anyString(),anyString());
+        verifyNoMoreInteractions(rep);
     }
 
     @Test

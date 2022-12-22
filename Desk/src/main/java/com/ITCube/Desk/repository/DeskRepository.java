@@ -20,14 +20,6 @@ public interface DeskRepository extends JpaRepository<Desk,Long> {
     @Query(value= "select * from desk as d"
             + "where d.room_id.id = ?1 ", nativeQuery = true)           // TODO check if it works
     List<Desk> findDeskByRoom(long roomId);
-    @Query(value = "select * from desk as d "
-            + "where d.id not in "
-            + "("
-            + "select b.desk_id "
-            + "from booking as b "
-            + "where (b.start_date BETWEEN ?1 and ?2) "
-            + "or (b.end_date BETWEEN ?1 and  ?2) "
-            + ")", nativeQuery = true)
-    List<Desk> findDeskAvailable(LocalDateTime start, LocalDateTime end);
+
 
 }

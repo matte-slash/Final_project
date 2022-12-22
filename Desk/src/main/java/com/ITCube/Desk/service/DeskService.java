@@ -1,10 +1,7 @@
 package com.ITCube.Desk.service;
 
 import com.ITCube.Data.model.Desk;
-import com.ITCube.Data.model.Room;
 
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,8 +15,6 @@ public interface DeskService {
     List<Desk> findAllDeskByRoom(long roomId);
 
     Desk findDeskById(long id);
-
-    List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end);
 
     Desk createDesk(Desk desk);
 
