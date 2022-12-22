@@ -152,7 +152,7 @@ class BookingServiceUnitTest {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        LocalDateTime start=LocalDateTime.of(
+        LocalDateTime okStart=LocalDateTime.of(
                 2023,
                 6,
                 15,
@@ -160,8 +160,7 @@ class BookingServiceUnitTest {
                 30,
                 1
         );
-        LocalDateTime end=start;
-        Booking expected=new Booking(start, end, user, desk);
+        Booking expected=new Booking(okStart, okStart, user, desk);
 
         when(rep.save(any(Booking.class))).thenReturn(expected);
 
