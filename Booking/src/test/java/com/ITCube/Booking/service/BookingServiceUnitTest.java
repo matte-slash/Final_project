@@ -6,14 +6,19 @@ import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,21 +32,40 @@ import static org.mockito.Mockito.*;
  */
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class BookingServiceUnitTest {
     @Mock
     private BookingRepository rep;
     @Mock
     private Clock clock;
     @InjectMocks
-    private BookingService underTest;
+    private BookingServiceImpl underTest;
 
+    private static final ZonedDateTime NOW= ZonedDateTime.of(
+            2023,
+            6,
+            15,
+            12,
+            30,
+            0,
+            0,
+            ZoneId.of("GMT")
+    );
+
+    @BeforeEach
+    void setUp() {
+        when(clock.getZone()).thenReturn(NOW.getZone());
+        when(clock.instant()).thenReturn(NOW.toInstant());
+    }
 
     @Test
     void findAllBookingsTest() {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Booking expected=new Booking(LocalDateTime.now(clock), LocalDateTime.now(clock), user, desk);
+        LocalDateTime start=LocalDateTime.now();
+        LocalDateTime end=LocalDateTime.now();
+        Booking expected=new Booking(start, end, user, desk);
         when(rep.findAll()).thenReturn(List.of(expected));
 
         // Action
@@ -60,7 +84,7 @@ class BookingServiceUnitTest {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Booking expected=new Booking(LocalDateTime.now(clock), LocalDateTime.now(clock), user, desk);
+        Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findAllBookingsByUser(anyLong())).thenReturn(List.of(expected));
 
         // Action
@@ -79,7 +103,7 @@ class BookingServiceUnitTest {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Booking expected=new Booking(LocalDateTime.now(clock), LocalDateTime.now(clock), user, desk);
+        Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findAllBookingsByDesk(anyLong())).thenReturn(List.of(expected));
 
         // Action
@@ -98,7 +122,7 @@ class BookingServiceUnitTest {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Booking expected=new Booking(LocalDateTime.now(clock), LocalDateTime.now(clock), user, desk);
+        Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
 
         // Action
@@ -128,11 +152,21 @@ class BookingServiceUnitTest {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
-        Booking expected=new Booking(LocalDateTime.now(clock), LocalDateTime.now(clock), user, desk);
+        LocalDateTime start=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        LocalDateTime end=start;
+        Booking expected=new Booking(start, end, user, desk);
+
         when(rep.save(any(Booking.class))).thenReturn(expected);
 
         // Action
-        Booking result=underTest.createBooking(any(Booking.class));
+        Booking result=underTest.createBooking(expected);
 
         // Assert
         assertNotNull(result);
@@ -144,12 +178,17 @@ class BookingServiceUnitTest {
     @Test
     void deleteBookingByIdTest() {
         // When
+        User user = new User("Matteo", "Rosso", "Junior");
+        Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
+        when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         doNothing().when(rep).deleteById(anyLong());
 
         // Action
         underTest.deleteBookingById(anyLong());
 
         // Assert
+        verify(rep,times(1)).findById(anyLong());
         verify(rep,times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(rep);
     }

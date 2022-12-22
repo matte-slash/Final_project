@@ -41,8 +41,8 @@ public class Booking {
     }
 
     public Booking(LocalDateTime startDate, LocalDateTime endDate, User user, Desk desk) {
-        startDate = startDate;
-        endDate = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.user = user;
         this.desk = desk;
     }

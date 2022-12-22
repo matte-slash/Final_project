@@ -27,7 +27,7 @@ class UserServiceUnitTest {
     private UserRepository rep;
 
     @InjectMocks
-    private UserService underTest;
+    private UserServiceImpl underTest;
 
     @Test
     void findAllUsersTest() {
@@ -43,7 +43,7 @@ class UserServiceUnitTest {
         assertThat(result.size(), equalTo(1));
         assertThat(result.get(0).getFirstName(),equalTo(expected.getFirstName()));
         verify(rep,times(1)).findAll();
-        verifyNoInteractions(rep);
+        verifyNoMoreInteractions(rep);
     }
 
     @Test
@@ -59,7 +59,7 @@ class UserServiceUnitTest {
         assertNotNull(result);
         assertEquals(result.getFirstName(),(expected.getFirstName()));
         verify(rep,times(1)).findById(anyLong());
-        verifyNoInteractions(rep);
+        verifyNoMoreInteractions(rep);
     }
 
     @Test
@@ -82,7 +82,7 @@ class UserServiceUnitTest {
         when(rep.save(any(User.class))).thenReturn(expected);
 
         // Action
-        User result=underTest.createUser(any(User.class));
+        User result=underTest.createUser(expected);
 
         // Assert
         assertThat(result.getFirstName(),equalTo(expected.getFirstName()));
@@ -96,10 +96,10 @@ class UserServiceUnitTest {
         User expected=new User("Matteo","Rosso","Junior");
         User new_user = new User("Luca", "Rosso", "Junior");
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
-        when(rep.save(new_user)).thenReturn(new_user);
+        when(rep.save(any(User.class))).thenReturn(new_user);
 
         // Action
-        User result=underTest.updateUser(anyLong(), any(User.class));
+        User result=underTest.updateUser(anyLong(), new_user);
 
         // Assert
         assertEquals(result.getFirstName(),(new_user.getFirstName()));
@@ -110,12 +110,15 @@ class UserServiceUnitTest {
     @Test
     void deleteUserTest() {
         // When
+        User expected=new User("Matteo","Rosso","Junior");
+        when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         doNothing().when(rep).deleteById(anyLong());
 
         // Action
         underTest.deleteUser(anyLong());
 
         // Assert
+        verify(rep,times(1)).findById(anyLong());
         verify(rep,times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(rep);
     }

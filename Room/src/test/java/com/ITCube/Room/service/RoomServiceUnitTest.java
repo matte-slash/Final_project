@@ -28,7 +28,7 @@ public class RoomServiceUnitTest {
     private RoomRepository rep;
 
     @InjectMocks
-    private RoomService underTest;
+    private RoomServiceImpl underTest;
 
     @Test
     void findAllRoomsTest(){
@@ -56,7 +56,7 @@ public class RoomServiceUnitTest {
         Room result=underTest.findRoomById(anyLong());
 
         // Assert
-        assertFalse(result==null);
+        assertNotNull(result);
         assertThat(result.getName(),equalTo("Stanza 1"));
         verify(rep,times(1)).findById(anyLong());
         verifyNoMoreInteractions(rep);
@@ -68,7 +68,7 @@ public class RoomServiceUnitTest {
         when(rep.findById(anyLong())).thenReturn(Optional.empty());
 
         // Assert
-        assertThrows(RoomNotFoundException.class,()->underTest.findRoomById(2L));
+        assertThrows(RoomNotFoundException.class,()->underTest.findRoomById(anyLong()));
     }
 
     @Test
@@ -89,6 +89,8 @@ public class RoomServiceUnitTest {
     @Test
     void deleteRoomTest(){
         // When
+        Room expected=new Room("Stanza 1", "Via Roma 15", 99);
+        when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         doNothing().when(rep).deleteById(anyLong());
 
         // Action
@@ -108,7 +110,7 @@ public class RoomServiceUnitTest {
         when(rep.save(any(Room.class))).thenReturn(new_r);
 
         // Action
-        Room result=underTest.updateRoom(anyLong(),any(Room.class));
+        Room result=underTest.updateRoom(anyLong(),new_r);
 
         // Assert
         assertEquals(result.getTotalDesk(), new_r.getTotalDesk());
