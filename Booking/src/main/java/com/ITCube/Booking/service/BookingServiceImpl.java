@@ -56,7 +56,6 @@ public class BookingServiceImpl implements BookingService{
         return rep.findDeskAvailable(start,end);
     }
 
-
     @Override
     public Booking createBooking(Booking booking) {
         log.info("Create Booking "+ booking.toString());

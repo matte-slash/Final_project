@@ -15,12 +15,16 @@ import java.util.List;
  * @author Matteo Rosso
  */
 
-@RequiredArgsConstructor
 @Slf4j
 @Service
 public class RoomServiceImpl implements RoomService{
 
     private RoomRepository rep;
+
+    @Autowired
+    public RoomServiceImpl(RoomRepository rep) {
+        this.rep = rep;
+    }
 
     @Override
     public List<Room> findAllRooms() {
