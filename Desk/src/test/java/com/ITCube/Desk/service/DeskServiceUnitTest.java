@@ -38,7 +38,7 @@ public class DeskServiceUnitTest {
         when(rep.findAll()).thenReturn(List.of(expected));
 
         // Action
-        List<Desk> result=underTest.findAlDesk();
+        List<Desk> result=underTest.findAllDesk();
 
         // Assert
         assertFalse(result.isEmpty());

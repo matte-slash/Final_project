@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DeskService {
 
-    List<Desk> findAlDesk();
+    List<Desk> findAllDesk();
 
     List<Desk> findAllDeskByRoom(long roomId);
 

@@ -5,6 +5,7 @@ import com.ITCube.Desk.exception.DeskNotFoundException;
 import com.ITCube.Desk.repository.DeskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -14,14 +15,19 @@ import java.util.List;
 /**
  * @author Matteo Rosso
  */
-@Slf4j @RequiredArgsConstructor
+@Slf4j
 @Service
 public class DeskServiceImpl implements DeskService {
 
     private DeskRepository rep;
 
+    @Autowired
+    public DeskServiceImpl(DeskRepository rep) {
+        this.rep = rep;
+    }
+
     @Override
-    public List<Desk> findAlDesk() {
+    public List<Desk> findAllDesk() {
         log.info("Find all desk");
         List<Desk> result=new ArrayList<>();
         rep.findAll().forEach(result::add);

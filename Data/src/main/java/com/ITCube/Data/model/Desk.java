@@ -17,7 +17,7 @@ public class Desk {
     @Column(name="desk_name", nullable=false)
     private String deskName;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
     @JoinColumn(name="room_id", nullable= false)
     private Room room;
 

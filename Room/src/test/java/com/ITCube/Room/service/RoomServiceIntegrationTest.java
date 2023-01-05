@@ -72,7 +72,7 @@ class RoomServiceIntegrationTest {
     void deleteRoomTest() {
         // Arrange
         Room expected=new Room("Stanza 1", "Via Roma 11", 99);
-        Room r=expected=underTest.saveRoom(expected);
+        Room r=underTest.saveRoom(expected);
 
         // Action
         underTest.deleteRoom(r.getId());
