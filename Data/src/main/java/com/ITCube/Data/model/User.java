@@ -17,8 +17,6 @@ public class User {
 
     private String role;
 
-    @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
-    private List<Booking> bookings;
 
     public User(){}
 
@@ -26,15 +24,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
-        this.bookings=new ArrayList<>();
-    }
-
-    public void addBooking(Booking booking){
-        bookings.add(booking);
-    }
-
-    public void removeBooking(Booking booking){
-        bookings.remove(booking);
     }
 
     @Override
@@ -44,16 +33,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role='" + role + '\'' +
-                ", bookings=" + bookings +
                 '}';
-    }
-
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
     }
 
     public long getId() {

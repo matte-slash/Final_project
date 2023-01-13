@@ -5,9 +5,10 @@ import com.ITCube.Booking.exception.IllegalDateTimeException;
 import com.ITCube.Booking.repository.BookingRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -16,12 +17,19 @@ import java.util.List;
 /**
  * @author Matteo Rosso
  */
-@Slf4j @RequiredArgsConstructor
+@Slf4j
 @Service
 public class BookingServiceImpl implements BookingService{
 
     private BookingRepository rep;
     private Clock clock;
+
+    @Autowired
+    public BookingServiceImpl(BookingRepository rep, Clock clock) {
+        this.rep = rep;
+        this.clock = clock;
+    }
+
     @Override
     public List<Booking> findAllBookings() {
         log.info("Find all bookings");

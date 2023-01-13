@@ -3,8 +3,8 @@ package com.ITCube.Booking.service;
 import com.ITCube.Booking.exception.UserNotFoundException;
 import com.ITCube.Booking.repository.UserRepository;
 import com.ITCube.Data.model.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,16 +13,21 @@ import java.util.List;
 /**
  * @author Matteo Rosso
  */
-@Slf4j @RequiredArgsConstructor
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService{
 
-    private UserRepository rep;
+    private final UserRepository rep;
+
+    @Autowired
+    public UserServiceImpl(UserRepository rep) {
+        this.rep = rep;
+    }
 
     @Override
     public List<User> findAllUsers() {
         log.info("Find all users");
-        List<User> result=new ArrayList<User>();
+        List<User> result= new ArrayList<>();
         rep.findAll().forEach(result::add);
         return result;
     }
