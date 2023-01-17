@@ -95,10 +95,29 @@ public class DeskServiceIntegrationTest {
         Desk expected=underTest.createDesk(d1);
 
         // Action
-        expected=underTest.updateDesk(expected.getId(), d2);
+        Desk result=underTest.updateDesk(expected.getId(), d2);
 
         // Assert
-        assertNotNull(expected);
-        assertThat(expected.getDeskName(),equalTo("A2"));
+        assertNotNull(result);
+        assertThat(result.getDeskName(),equalTo("A2"));
+    }
+
+    @Test
+    void findAllDeskByRoomTest(){
+        // Arrange
+        Room r1=new Room("Stanza 1", "Via", 90);
+        Room r2=new Room("Stanza 2", "V",11);
+        Desk d1=new Desk("A1", r1);
+        Desk d2=new Desk("A2", r2);
+        underTest.createDesk(d1);
+        underTest.createDesk(d2);
+
+        // Action
+        List<Desk> result= underTest.findAllDeskByRoom(r1.getId());
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(),equalTo(1));
+        assertThat(result.get(0).getDeskName(),equalTo("A1"));
     }
 }

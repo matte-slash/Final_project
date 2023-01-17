@@ -17,8 +17,8 @@ import java.util.List;
 @Repository
 public interface DeskRepository extends JpaRepository<Desk,Long> {
 
-    @Query(value= "select * from desk as d"
-            + "where d.room_id.id = ?1 ", nativeQuery = true)           // TODO check if it works
+    @Query(value= "select * from desk as d "
+            + "where d.room_id = ?1 ", nativeQuery = true)           // TODO check if it works
     List<Desk> findDeskByRoom(long roomId);
 
 
