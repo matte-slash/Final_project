@@ -36,7 +36,7 @@ public class RoomController {
 
     @ResponseStatus(value= HttpStatus.FOUND)
     @GetMapping("/{id}")
-    public Room findRoomByID(@PathVariable long id){
+    public Room findRoomById(@PathVariable long id){
         log.info("Find Room "+ id);
         return service.findRoomById(id);
     }

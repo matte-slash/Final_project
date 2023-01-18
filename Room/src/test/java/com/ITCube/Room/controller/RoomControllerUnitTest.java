@@ -54,7 +54,7 @@ class RoomControllerUnitTest {
         when(service.findRoomById(anyLong())).thenReturn(expected);
 
         // Action
-        Room result=underTest.findRoomByID(anyLong());
+        Room result=underTest.findRoomById(anyLong());
 
         // Assert
         assertNotNull(result);
@@ -69,7 +69,7 @@ class RoomControllerUnitTest {
         when(service.findRoomById(anyLong())).thenThrow(RoomNotFoundException.class);
 
         // Action and Assert
-        assertThrows(RoomNotFoundException.class,()->underTest.findRoomByID(anyLong()));
+        assertThrows(RoomNotFoundException.class,()->underTest.findRoomById(anyLong()));
         verify(service,times(1)).findRoomById(anyLong());
         verifyNoMoreInteractions(service);
     }
