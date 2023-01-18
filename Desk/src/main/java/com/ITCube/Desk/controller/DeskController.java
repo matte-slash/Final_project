@@ -63,7 +63,7 @@ public class DeskController {
 
     @ResponseStatus(value= HttpStatus.OK)
     @PutMapping("/{id")
-    public Desk update(@PathVariable long id, @RequestBody @Valid Desk desk){
+    public Desk updateDesk(@PathVariable long id, @RequestBody @Valid Desk desk){
         log.info("Update desk "+id);
         return service.updateDesk(id, desk);
     }
