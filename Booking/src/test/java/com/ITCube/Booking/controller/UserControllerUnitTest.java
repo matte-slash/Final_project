@@ -44,21 +44,6 @@ class UserControllerUnitTest {
         verifyNoMoreInteractions(service);
     }
 
-    @Test
-    void findOneUserTest() {
-        // Arrange
-        User expected=new User("Matteo", "Rosso","Dev");
-        when(service.findUserByNameAndBySurname(anyString(),anyString())).thenReturn(expected);
-
-        // Action
-        User result=underTest.findOneUser(anyString(),anyString());
-
-        // Assert
-        assertNotNull(result);
-        assertThat(result.getFirstName(),equalTo(expected.getFirstName()));
-        verify(service,times(1)).findUserByNameAndBySurname(anyString(),anyString());
-        verifyNoMoreInteractions(service);
-    }
 
     @Test
     void findUserByIdTest() {

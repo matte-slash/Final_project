@@ -38,11 +38,6 @@ public class UserServiceImpl implements UserService{
         return rep.findById(id).orElseThrow(()->new UserNotFoundException("User "+id+" not found"));
     }
 
-    @Override
-    public User findUserByNameAndBySurname(String name, String surname) {
-        log.info("Find user by name"+ name+" and surname"+ surname);
-        return rep.findByFirstNameIgnoreCaseAndLastNameIgnoreCase(name, surname);
-    }
 
     @Override
     public User createUser(User user) {

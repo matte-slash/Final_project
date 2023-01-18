@@ -35,13 +35,6 @@ public class UserController {
         return service.findAllUsers();
     }
 
-    @ResponseStatus(value=HttpStatus.FOUND)
-    @GetMapping
-    public User findOneUser(@RequestParam(name="name",required = true) String name,
-                            @RequestParam(name="surname",required = true) String surname){
-        log.info("Find User "+name +" "+surname);
-        return service.findUserByNameAndBySurname(name, surname);
-    }
 
     @ResponseStatus(value= HttpStatus.FOUND)
     @GetMapping("/{id}")
@@ -58,7 +51,7 @@ public class UserController {
     }
 
     @ResponseStatus(value=HttpStatus.NO_CONTENT)
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id){
         log.info("Delete user "+ id);
         service.deleteUser(id);

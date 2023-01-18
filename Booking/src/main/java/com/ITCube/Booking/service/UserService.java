@@ -15,8 +15,6 @@ public interface UserService {
 
     User findUserById(long id);
 
-    User findUserByNameAndBySurname(String name, String surname);
-
     User createUser(User user);
 
     User updateUser(long id, User user);

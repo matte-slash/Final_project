@@ -54,21 +54,7 @@ class UserServiceIntegrationTest {
         assertThat(result.getFirstName(),equalTo("Matteo"));
     }
 
-    @Test
-    void findUserByNameAndBySurnameTest() {
-        // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
-        User wrong=new User("Luca", "Rosso","Dev");
-        underTest.createUser(expected);
-        underTest.createUser(wrong);
 
-        // Action
-        User result=underTest.findUserByNameAndBySurname("Matteo","Rosso");
-
-        // Assert
-        assertNotNull(result);
-        assertThat(result.getFirstName(),equalTo("Matteo"));
-    }
 
     @Test
     void createUserTest() {
