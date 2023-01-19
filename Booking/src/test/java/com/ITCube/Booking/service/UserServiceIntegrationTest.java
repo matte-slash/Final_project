@@ -1,6 +1,8 @@
 package com.ITCube.Booking.service;
 
+import com.ITCube.Booking.repository.UserRepository;
 import com.ITCube.Data.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class UserServiceIntegrationTest {
 
     @Autowired
     private UserService underTest;
+    @Autowired
+    private UserRepository rep;
+
+    @BeforeEach
+    void setUp() {
+        rep.deleteAll();
+    }
 
     @Test
     void findAllUsersTest() {
@@ -53,7 +61,6 @@ class UserServiceIntegrationTest {
         assertNotNull(result);
         assertThat(result.getFirstName(),equalTo("Matteo"));
     }
-
 
 
     @Test

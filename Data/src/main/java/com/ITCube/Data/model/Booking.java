@@ -29,11 +29,11 @@ public class Booking {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime endDate;
 
-    @ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.MERGE , CascadeType.PERSIST})
-    @JoinColumn(name="user_id", nullable= false)        // TODO add JsonIgnore
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="user_id", nullable= false)
     private User user;
 
-    @ManyToOne(fetch=FetchType.EAGER, cascade= {CascadeType.MERGE , CascadeType.PERSIST})
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="desk_id", nullable= false)
     private Desk desk;
 

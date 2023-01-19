@@ -69,7 +69,7 @@ public class BookingServiceImpl implements BookingService{
         log.info("Create Booking "+ booking.toString());
         if(booking.getEndDate().isBefore(booking.getStartDate()) ||
                 booking.getStartDate().isBefore(LocalDateTime.now(clock))){
-            throw new IllegalDateTimeException("Date are wrong");
+            throw new IllegalDateTimeException("Date are wrong");       //TODO check
         }
         return rep.save(booking);
     }

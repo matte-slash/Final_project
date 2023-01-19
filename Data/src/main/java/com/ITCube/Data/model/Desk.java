@@ -17,7 +17,7 @@ public class Desk {
     @Column(name="desk_name", nullable=false)
     private String deskName;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.PERSIST)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="room_id", nullable= false)
     private Room room;
 
@@ -25,6 +25,12 @@ public class Desk {
     }
 
     public Desk(String deskName, Room room) {
+        this.deskName = deskName;
+        this.room = room;
+    }
+
+    public Desk(long id, String deskName, Room room) {
+        this.id = id;
         this.deskName = deskName;
         this.room = room;
     }

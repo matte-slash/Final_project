@@ -2,10 +2,11 @@ package com.ITCube.Desk.service;
 
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
+import com.ITCube.Desk.repository.DeskRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -20,15 +21,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DeskServiceIntegrationTest {
     @Autowired
     private DeskService underTest;
 
+    @Autowired
+    private DeskRepository rep;
+
+    @BeforeEach
+    void setUp() {
+        rep.deleteAll();
+    }
+
     @Test
     void findAllDeskTest(){
         // Arrange
-        Room room=new Room("Stanza 1", "Via Roma 11", 99);
+        Room room=new Room(1L,"Stanza 1", "Via Roma 11", 99);
         Desk expected= new Desk("A1", room);
         underTest.createDesk(expected);
 
@@ -44,7 +52,7 @@ public class DeskServiceIntegrationTest {
     @Test
     void findDeskByIdTest(){
         // Arrange
-        Room room=new Room("Stanza 1", "Via Roma 11", 99);
+        Room room=new Room(1L,"Stanza 1", "Via Roma 11", 99);
         Desk expected= new Desk("A1", room);
         Desk d=underTest.createDesk(expected);
 
@@ -59,7 +67,7 @@ public class DeskServiceIntegrationTest {
     @Test
     void createDeskTest(){
         // Arrange
-        Room room=new Room("Stanza 1", "Via Roma 11", 99);
+        Room room=new Room(1L,"Stanza 1", "Via Roma 11", 99);
         Desk expected= new Desk("A1", room);
 
         // Action
@@ -73,7 +81,7 @@ public class DeskServiceIntegrationTest {
     @Test
     void deleteDeskTest(){
         // Arrange
-        Room room=new Room("Stanza 1", "Via Roma 11", 99);
+        Room room=new Room(1L,"Stanza 1", "Via Roma 11", 99);
         Desk expected= new Desk("A1", room);
         Desk d=underTest.createDesk(expected);
 
@@ -89,7 +97,7 @@ public class DeskServiceIntegrationTest {
     @Test
     void updateDeskTest(){
         // Arrange
-        Room room=new Room("Stanza 1", "Via Roma 11", 99);
+        Room room=new Room(1L,"Stanza 1", "Via Roma 11", 99);
         Desk d1=new Desk("A1", room);
         Desk d2=new Desk("A2", room);
         Desk expected=underTest.createDesk(d1);
@@ -105,8 +113,8 @@ public class DeskServiceIntegrationTest {
     @Test
     void findAllDeskByRoomTest(){
         // Arrange
-        Room r1=new Room("Stanza 1", "Via", 90);
-        Room r2=new Room("Stanza 2", "V",11);
+        Room r1=new Room(1L,"Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L,"Stanza 2", "V",11);
         Desk d1=new Desk("A1", r1);
         Desk d2=new Desk("A2", r2);
         underTest.createDesk(d1);

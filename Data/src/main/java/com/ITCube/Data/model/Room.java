@@ -33,6 +33,13 @@ public class Room {
         this.totalDesk = totalDesk;
     }
 
+    public Room(Long id, String name, String address, int totalDesk) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.totalDesk = totalDesk;
+    }
+
     @Override
     public String toString() {
         return "Room{" +
