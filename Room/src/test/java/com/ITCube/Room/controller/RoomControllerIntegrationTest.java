@@ -72,10 +72,10 @@ class RoomControllerIntegrationTest {
     void findRoomByIdFailTest() throws Exception {
         // Arrange
         doThrow(new RoomNotFoundException("room 77 not found"))
-                .when(service).deleteRoom(anyLong());
+                .when(service).findRoomById(anyLong());
 
         // Action and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rooms/77"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/rooms/77"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

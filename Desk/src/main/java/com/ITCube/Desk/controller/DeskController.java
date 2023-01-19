@@ -41,7 +41,7 @@ public class DeskController {
     }
 
     @ResponseStatus(value= HttpStatus.FOUND)
-    @GetMapping("/{id")
+    @GetMapping("/{id}")
     public Desk findDeskById(@PathVariable long id){
         log.info("findDeskById " +id);
         return service.findDeskById(id);
@@ -55,14 +55,14 @@ public class DeskController {
     }
 
     @ResponseStatus(value= HttpStatus.NO_CONTENT)
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public void deleteDesk(@PathVariable long id){
         log.info("Deleting desk "+ id);
         service.deleteDesk(id);
     }
 
     @ResponseStatus(value= HttpStatus.OK)
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public Desk updateDesk(@PathVariable long id, @RequestBody @Valid Desk desk){
         log.info("Update desk "+id);
         return service.updateDesk(id, desk);
