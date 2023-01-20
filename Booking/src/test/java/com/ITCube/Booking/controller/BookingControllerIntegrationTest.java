@@ -202,7 +202,7 @@ class BookingControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.startDate").value(expected.getStartDate()));
+                .andExpect(jsonPath("$.startDate").value(start));
     }
 
     @Test

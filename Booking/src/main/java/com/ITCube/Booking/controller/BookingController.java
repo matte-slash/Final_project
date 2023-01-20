@@ -79,4 +79,10 @@ public class BookingController {
         service.deleteBookingById(id);
     }
 
+
+    // TODO ricerca available per room
+    // TODO inserire Update
+    // TODO in creazione controllare che l'utente non abbia altre prenotazioni per quell' intervallo di tempo
+    // TODO controllare validità orari (es limite orarrio apertura + lasso in stesso giorno/mese/anno
+
 }
