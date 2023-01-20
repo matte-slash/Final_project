@@ -2,12 +2,13 @@ package com.ITCube.Booking.controller;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
 import com.ITCube.Booking.service.BookingService;
-import com.ITCube.Booking.util.Interval;
+import com.ITCube.Booking.util.LocalDateTimeAdapter;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.model.User;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,9 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -190,12 +189,10 @@ class BookingControllerIntegrationTest {
         Booking expected=new Booking(st,en,u,d);
         when(service.createBooking(any(Booking.class))).thenReturn(expected);
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-                (JsonDeserializer<LocalDateTime>)
-                        (json, type, jsonDeserializationContext)
-                                -> ZonedDateTime.parse(json.getAsJsonPrimitive()
-                                .getAsString())
-                                .toLocalDateTime())
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         // Action and Assert

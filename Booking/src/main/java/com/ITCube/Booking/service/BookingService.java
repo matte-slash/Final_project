@@ -21,7 +21,7 @@ public interface BookingService {
     Booking findBookingById(long id);
 
     List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end);
-                        //todo check if possible in Booking
+
     Booking createBooking(Booking booking);
 
     void deleteBookingById(long id);
