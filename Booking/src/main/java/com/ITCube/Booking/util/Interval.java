@@ -9,9 +9,9 @@ public class Interval {
     @NotBlank
     private final LocalDateTime end;
 
-    public Interval(LocalDateTime start, LocalDateTime end) {
-        this.start = start;
-        this.end = end;
+    public Interval(String start, String end) {
+        this.start = LocalDateTime.parse(start);
+        this.end = LocalDateTime.parse(end);
     }
 
     public LocalDateTime getStart() {

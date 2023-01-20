@@ -99,6 +99,25 @@ class BookingServiceUnitTest {
     }
 
     @Test
+    void findAllBookingsByUserAndDeskTest(){
+        // When
+        User user = new User("Matteo", "Rosso", "Junior");
+        Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
+        when(rep.query(anyLong(),anyLong())).thenReturn(List.of(expected));
+
+        // Action
+        List<Booking> result=underTest.query(anyLong(),anyLong());
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getUser().getFirstName(),equalTo(user.getFirstName()));
+        verify(rep,times(1)).query(anyLong(),anyLong());
+        verifyNoMoreInteractions(rep);
+    }
+
+    @Test
     void findAllBookingByDeskTest() {
         // When
         User user = new User("Matteo", "Rosso", "Junior");

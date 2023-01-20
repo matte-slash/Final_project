@@ -17,11 +17,11 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query(value= "select * from booking as b "
-            + "where b.desk_id= ?1 ", nativeQuery = true)        // todo: check
+            + "where b.desk_id= ?1 ", nativeQuery = true)
     List<Booking> findAllBookingsByDesk(long id_Desk);
 
     @Query(value= "select * from booking as b "
-            + "where b.user_id = ?1 ", nativeQuery = true)       //todo: check
+            + "where b.user_id = ?1 ", nativeQuery = true)
     List<Booking> findAllBookingsByUser(long id_User);
 
     @Query(value = "select * from desk as d "
@@ -34,4 +34,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             + ")", nativeQuery = true)
     List<Desk> findDeskAvailable(LocalDateTime start, LocalDateTime end);
 
+
+    @Query(value= "select * from booking as b "
+            + "where b.desk_id= ?1 AND b.user_id= ?2 ", nativeQuery = true)
+    List<Booking> query(Long deskID, Long userID);
 }

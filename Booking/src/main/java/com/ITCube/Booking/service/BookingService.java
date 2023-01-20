@@ -26,4 +26,5 @@ public interface BookingService {
 
     void deleteBookingById(long id);
 
+    List<Booking> query(Long deskID, Long userID);
 }

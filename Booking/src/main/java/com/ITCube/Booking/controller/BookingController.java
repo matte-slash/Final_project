@@ -2,7 +2,6 @@ package com.ITCube.Booking.controller;
 
 import com.ITCube.Booking.service.BookingService;
 import com.ITCube.Booking.util.Interval;
-import com.ITCube.Booking.util.UtilObject;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import lombok.extern.slf4j.Slf4j;
@@ -33,19 +32,22 @@ public class BookingController {
 
     @ResponseStatus(value= HttpStatus.OK)
     @GetMapping
-    public List<Booking> findAllBookings(UtilObject ids){
-        if(ids==null){
-            log.info("Find all bookings");
-            return service.findAllBookings();
+    public List<Booking> findAllBookings(@RequestParam(required = false)Long deskID,
+                                         @RequestParam(required = false) Long userID){
+        if(deskID!=null && userID!=null){
+            log.info("Find all bookings by desk " +deskID+ " and user " +userID);
+            return service.query(deskID, userID);
         }
-        if(ids.getIdDesk()!=null){
-            log.info("Find all booking by desk "+ ids.getIdDesk());
-            return service.findAllBookingByDesk(ids.getIdDesk());
-        }else{
-            log.info("Find all bookings by user "+ ids.getIdUser());
-            return service.findAllBookingsByUser(ids.getIdUser());
+        if(userID!=null){
+            log.info("Find all booking by user " +userID);
+            return service.findAllBookingsByUser(userID);
         }
-
+        if(deskID!=null){
+            log.info("Find all bookings by desk "+deskID);
+            return service.findAllBookingByDesk(deskID);
+        }
+        log.info("Find all bookings");
+        return service.findAllBookings();
     }
 
 

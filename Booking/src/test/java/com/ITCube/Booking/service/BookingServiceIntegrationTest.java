@@ -117,6 +117,29 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
+    void findAllBookingsByDeskAndByUserTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        underTest.createBooking(expected);
+
+        // Action
+        List<Booking> result=underTest.query(d.getId(),u.getId());
+
+        // Arrange
+        assertNotNull(result);
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getDesk().getDeskName(), equalTo("A1"));
+        assertThat(result.get(0).getUser().getFirstName(), equalTo("Matteo"));
+    }
+
+    @Test
     void findBookingByIdTest() {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);

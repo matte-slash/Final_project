@@ -2,7 +2,6 @@ package com.ITCube.Booking.controller;
 
 import com.ITCube.Booking.service.BookingService;
 import com.ITCube.Booking.util.Interval;
-import com.ITCube.Booking.util.UtilObject;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
@@ -18,7 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -49,7 +48,7 @@ class BookingControllerUnitTest {
         when(service.findAllBookings()).thenReturn(List.of(expected));
 
         // Action
-        List<Booking> result= underTest.findAllBookings(null);
+        List<Booking> result= underTest.findAllBookings(null,null);
 
         // Assert
         assertNotNull(result);
@@ -70,11 +69,10 @@ class BookingControllerUnitTest {
         String end = "2023-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
-        UtilObject util=new UtilObject(null, 1L);
         when(service.findAllBookingByDesk(anyLong())).thenReturn(List.of(expected));
 
         // Action
-        List<Booking> result= underTest.findAllBookings(util);
+        List<Booking> result= underTest.findAllBookings(1L,null);
 
         // Assert
         assertNotNull(result);
@@ -95,17 +93,40 @@ class BookingControllerUnitTest {
         String end = "2023-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
-        UtilObject util=new UtilObject(1L, null);
         when(service.findAllBookingsByUser(anyLong())).thenReturn(List.of(expected));
 
         // Action
-        List<Booking> result= underTest.findAllBookings(util);
+        List<Booking> result= underTest.findAllBookings(null,1L);
 
         // Assert
         assertNotNull(result);
         assertThat(result.size(), equalTo(1));
         assertThat(result.get(0).getStartDate(), equalTo(st));
         verify(service, times(1)).findAllBookingsByUser(anyLong());
+        verifyNoMoreInteractions(service);
+    }
+
+    @Test
+    void findBookingsByDeskAndByUser(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        when(service.query(anyLong(),anyLong())).thenReturn(List.of(expected));
+
+        // Action
+        List<Booking> result=underTest.findAllBookings(1L,1L);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getStartDate(), equalTo(st));
+        verify(service, times(1)).query(anyLong(),anyLong());
         verifyNoMoreInteractions(service);
     }
 
@@ -144,7 +165,7 @@ class BookingControllerUnitTest {
         when(service.findAllDeskAvailable(st,en)).thenReturn(List.of(expected));
 
         // Action
-        List<Desk> result=underTest.findAllDeskAvailable(new Interval(st,en));
+        List<Desk> result=underTest.findAllDeskAvailable(new Interval(start,end));
 
         // Assert
         assertNotNull(result);

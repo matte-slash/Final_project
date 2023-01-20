@@ -79,4 +79,10 @@ public class BookingServiceImpl implements BookingService{
         rep.findById(id).orElseThrow(()->new BookingNotFoundException("Booking "+id+ " not found"));
         rep.deleteById(id);
     }
+
+    @Override
+    public List<Booking> query(Long deskID, Long userID) {
+        log.info("Query method");
+        return rep.query(deskID, userID);
+    }
 }
