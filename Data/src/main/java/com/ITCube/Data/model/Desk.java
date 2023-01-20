@@ -1,5 +1,7 @@
 package com.ITCube.Data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +19,7 @@ public class Desk {
     @Column(name="desk_name", nullable=false)
     private String deskName;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="room_id", nullable= false)
     private Room room;
 
