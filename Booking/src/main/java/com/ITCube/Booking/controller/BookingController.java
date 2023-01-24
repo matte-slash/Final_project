@@ -79,10 +79,21 @@ public class BookingController {
         service.deleteBookingById(id);
     }
 
+    @ResponseStatus(value= HttpStatus.FOUND)
+    @GetMapping("/desks/{id}")
+    public List<Desk> findAllAvailableByRoom(@PathVariable long id,Interval interval){
+        log.info("Find desk available by room "+ id);
+        return service.findAllAvailableByRoom(id,interval.getStart(),interval.getEnd());
+    }
 
-    // TODO ricerca available per room
-    // TODO inserire Update
+
+    @ResponseStatus(value= HttpStatus.OK)
+    @PutMapping("/{id}")
+    public Booking updateBooking(@PathVariable long id, @RequestBody @Valid Booking b){
+        log.info("update booking "+ id);
+        return service.updateBooking(id,b);
+    }
+
     // TODO in creazione controllare che l'utente non abbia altre prenotazioni per quell' intervallo di tempo
-    // TODO controllare validità orari (es limite orarrio apertura + lasso in stesso giorno/mese/anno
 
 }

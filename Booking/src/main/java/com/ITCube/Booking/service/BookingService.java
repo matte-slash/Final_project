@@ -1,5 +1,6 @@
 package com.ITCube.Booking.service;
 
+import com.ITCube.Booking.util.Interval;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 
@@ -27,4 +28,8 @@ public interface BookingService {
     void deleteBookingById(long id);
 
     List<Booking> query(Long deskID, Long userID);
+
+    List<Desk> findAllAvailableByRoom(long id, LocalDateTime start, LocalDateTime end);
+
+    Booking updateBooking(long id, Booking b);
 }

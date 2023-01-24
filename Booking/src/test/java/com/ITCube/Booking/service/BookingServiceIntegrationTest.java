@@ -165,6 +165,7 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
+        Desk d2=new Desk(2L,"C", r);
         User u=new User(1L,"Matteo","Rosso", "Dev");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
@@ -178,7 +179,32 @@ class BookingServiceIntegrationTest {
 
         // Assert
         assertNotNull(result);
-        assertThat(result.size(), equalTo(0));
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getDeskName(), equalTo(d2.getDeskName()));
+    }
+
+    @Test
+    void findAllDeskAvailableByRoom(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L, "Stanza 2", "V", 11);
+        Desk d=new Desk(1L,"A1",r);
+        Desk d2=new Desk(2L, "A2", r2);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        underTest.createBooking(expected);
+
+        // Action
+        List<Desk> result=underTest.findAllAvailableByRoom(2L, st, en);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0).getDeskName(), equalTo(d2.getDeskName()));
     }
 
     @Test

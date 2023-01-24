@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,20 +58,21 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end) {
         log.info("Find all desk available");
-        if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock))){
-            throw new IllegalDateTimeException("Date insert error");
-        }
+        checkTime(start, end);
         return rep.findDeskAvailable(start,end);
     }
 
     @Override
     public Booking createBooking(Booking booking) {
         log.info("Create Booking "+ booking.toString());
-        if(booking.getEndDate().isBefore(booking.getStartDate()) ||
-                booking.getStartDate().isBefore(LocalDateTime.now(clock))){
-            throw new IllegalDateTimeException("Date are wrong");       //TODO check
+        checkTime(booking.getStartDate(), booking.getEndDate());
+
+        if(rep.checkUserBookings(booking.getUser().getId(), booking.getStartDate(), booking.getEndDate()).isEmpty()){
+            return rep.save(booking);
+        }else{
+            throw new IllegalDateTimeException("User "+
+                    booking.getUser().getId()+ " already has a booking for that time");
         }
-        return rep.save(booking);
     }
 
     @Override
@@ -84,5 +86,34 @@ public class BookingServiceImpl implements BookingService{
     public List<Booking> query(Long deskID, Long userID) {
         log.info("Query method");
         return rep.query(deskID, userID);
+    }
+
+    @Override
+    public List<Desk> findAllAvailableByRoom(long id, LocalDateTime start, LocalDateTime end) {
+        log.info("Find all desk available by room "+id);
+        checkTime(start, end);
+        List<Desk> list=rep.findDeskAvailable(start, end);
+        List<Desk> result=new ArrayList<>();
+        for(Desk desk : list){
+            if(desk.getRoom().getId()==id){
+                result.add(desk);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Booking updateBooking(long id, Booking b) {
+        log.info("Update booking "+ id);
+        this.deleteBookingById(id);
+        return this.createBooking(b);
+    }
+
+    private void checkTime(LocalDateTime start, LocalDateTime end){
+        if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock)) || (start.getYear()!=end.getYear()) ||
+                (start.getMonthValue()!=end.getMonthValue()) || (start.getDayOfMonth()!=end.getDayOfMonth()) ||
+                (start.getHour()<9) || (end.getHour()>18 && end.getMinute()!=0)){
+            throw new IllegalDateTimeException("Date insert error");
+        }
     }
 }
