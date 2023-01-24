@@ -10,9 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,8 +60,6 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    @Transactional
-    @Commit
     void findAllBookingsByUserTest() {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
@@ -164,8 +160,9 @@ class BookingServiceIntegrationTest {
     void findAllDeskAvailableTest() {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
-        Desk d2=new Desk(2L,"C", r);
+        Desk d2=new Desk(2L,"C1", r2);
         User u=new User(1L,"Matteo","Rosso", "Dev");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
@@ -189,7 +186,7 @@ class BookingServiceIntegrationTest {
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
-        Desk d2=new Desk(2L, "A2", r2);
+        Desk d2=new Desk(2L, "C1", r2);
         User u=new User(1L,"Matteo","Rosso", "Dev");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
@@ -197,9 +194,10 @@ class BookingServiceIntegrationTest {
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
+        LocalDateTime _try=LocalDateTime.parse("2024-02-21T10:30");
 
         // Action
-        List<Desk> result=underTest.findAllAvailableByRoom(2L, st, en);
+        List<Desk> result=underTest.findAllAvailableByRoom(2L, _try, _try);
 
         // Assert
         assertNotNull(result);
@@ -280,4 +278,56 @@ class BookingServiceIntegrationTest {
         assertNotNull(result);
         assertThat(result.size(),equalTo(0));
     }
+
+    @Test
+    void updateBookingTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L, "Stanza 2", "V", 11);
+        Desk d=new Desk(1L,"A1",r);
+        Desk d2=new Desk(2L, "C1", r2);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking booking=new Booking(st,en,u,d);
+        underTest.createBooking(booking);
+        Booking expected=new Booking(st,en,u,d2);
+
+        // Action
+        Booking result= underTest.updateBooking(booking.getId(), expected);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.getDesk().getDeskName(),equalTo(d2.getDeskName()));
+    }
+
+    @Test
+    void updateBookingFailTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L, "Stanza 2", "V", 11);
+        Desk d=new Desk(1L,"A1",r);
+        Desk d2=new Desk(2L, "C1", r2);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking booking=new Booking(st,en,u,d);
+        underTest.createBooking(booking);
+
+        LocalDateTime s2=LocalDateTime.parse("2023-03-21T10:30");
+        LocalDateTime e2=LocalDateTime.parse("2023-03-21T11:30");
+
+        Booking booking2=new Booking(s2,e2,u,d2);
+        underTest.createBooking(booking2);
+
+        Booking expected= new Booking(s2,e2,u,d);
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class,()->underTest.updateBooking(booking.getId(),expected));
+    }
+
 }

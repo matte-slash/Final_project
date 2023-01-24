@@ -94,6 +94,6 @@ public class BookingController {
         return service.updateBooking(id,b);
     }
 
-    // TODO in creazione controllare che l'utente non abbia altre prenotazioni per quell' intervallo di tempo
+    // TODO aggiungere controllo update in Controller booking
 
 }

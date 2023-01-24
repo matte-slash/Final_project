@@ -3,6 +3,7 @@ package com.ITCube.Data.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Matteo Rosso
@@ -38,6 +39,18 @@ public class Room {
         this.name = name;
         this.address = address;
         this.totalDesk = totalDesk;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room room)) return false;
+        return totalDesk == room.totalDesk && id.equals(room.id) && name.equals(room.name) && address.equals(room.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, totalDesk);
     }
 
     @Override

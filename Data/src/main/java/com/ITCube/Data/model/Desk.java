@@ -1,10 +1,7 @@
 package com.ITCube.Data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * @author Matteo Rosso
@@ -35,6 +32,18 @@ public class Desk {
         this.id = id;
         this.deskName = deskName;
         this.room = room;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Desk desk)) return false;
+        return id == desk.id && deskName.equals(desk.deskName) && room.equals(desk.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, deskName, room);
     }
 
     @Override

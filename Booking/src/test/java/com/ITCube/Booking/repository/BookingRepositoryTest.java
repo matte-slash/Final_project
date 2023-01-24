@@ -16,22 +16,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Matteo Rosso
+ */
 @DataJpaTest
 @ActiveProfiles("test")
 class BookingRepositoryTest {
     @Autowired
     public BookingRepository underTest;
-
-    @Test
-    void findDeskAvailableTest() {
-        String start = "2023-02-21T10:30";
-        LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
-        LocalDateTime en = LocalDateTime.parse(end);
-        List<Desk> result= underTest.findDeskAvailable(st,en);
-
-        assertNotNull(result);
-    }
 
     @Test
     void findAllBookingsByDeskTest() {
@@ -169,4 +161,5 @@ class BookingRepositoryTest {
         assertNotNull(result);
         assertThat(result.size(), equalTo(0));
     }
+
 }

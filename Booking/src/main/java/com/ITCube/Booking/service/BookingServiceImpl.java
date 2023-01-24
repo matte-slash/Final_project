@@ -3,6 +3,7 @@ package com.ITCube.Booking.service;
 import com.ITCube.Booking.exception.BookingNotFoundException;
 import com.ITCube.Booking.exception.IllegalDateTimeException;
 import com.ITCube.Booking.repository.BookingRepository;
+import com.ITCube.Booking.repository.DeskRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +23,13 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService{
 
     private final BookingRepository rep;
+    private final DeskRepository dRep;
     private final Clock clock;
 
     @Autowired
-    public BookingServiceImpl(BookingRepository rep, Clock clock) {
+    public BookingServiceImpl(BookingRepository rep, DeskRepository dRep, Clock clock) {
         this.rep = rep;
+        this.dRep = dRep;
         this.clock = clock;
     }
 
@@ -59,12 +62,13 @@ public class BookingServiceImpl implements BookingService{
     public List<Desk> findAllDeskAvailable(LocalDateTime start, LocalDateTime end) {
         log.info("Find all desk available");
         checkTime(start, end);
-        return rep.findDeskAvailable(start,end);
+        return dRep.findDeskAvailable(start,end);
     }
 
     @Override
     public Booking createBooking(Booking booking) {
         log.info("Create Booking "+ booking.toString());
+
         checkTime(booking.getStartDate(), booking.getEndDate());
 
         if(rep.checkUserBookings(booking.getUser().getId(), booking.getStartDate(), booking.getEndDate()).isEmpty()){
@@ -92,7 +96,7 @@ public class BookingServiceImpl implements BookingService{
     public List<Desk> findAllAvailableByRoom(long id, LocalDateTime start, LocalDateTime end) {
         log.info("Find all desk available by room "+id);
         checkTime(start, end);
-        List<Desk> list=rep.findDeskAvailable(start, end);
+        List<Desk> list=dRep.findDeskAvailable(start, end);
         List<Desk> result=new ArrayList<>();
         for(Desk desk : list){
             if(desk.getRoom().getId()==id){
@@ -109,7 +113,7 @@ public class BookingServiceImpl implements BookingService{
         return this.createBooking(b);
     }
 
-    private void checkTime(LocalDateTime start, LocalDateTime end){
+    public void checkTime(LocalDateTime start, LocalDateTime end){
         if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock)) || (start.getYear()!=end.getYear()) ||
                 (start.getMonthValue()!=end.getMonthValue()) || (start.getDayOfMonth()!=end.getDayOfMonth()) ||
                 (start.getHour()<9) || (end.getHour()>18 && end.getMinute()!=0)){

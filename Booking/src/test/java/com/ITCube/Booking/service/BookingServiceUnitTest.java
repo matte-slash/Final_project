@@ -1,7 +1,9 @@
 package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
+import com.ITCube.Booking.exception.IllegalDateTimeException;
 import com.ITCube.Booking.repository.BookingRepository;
+import com.ITCube.Booking.repository.DeskRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
@@ -36,6 +38,8 @@ import static org.mockito.Mockito.*;
 class BookingServiceUnitTest {
     @Mock
     private BookingRepository rep;
+    @Mock
+    private DeskRepository desk;
     @Mock
     private Clock clock;
     @InjectMocks
@@ -160,6 +164,8 @@ class BookingServiceUnitTest {
 
         // Assert
         assertThrows(BookingNotFoundException.class, ()-> underTest.findBookingById(anyLong()));
+        verify(rep,times(1)).findById(anyLong());
+        verifyNoMoreInteractions(rep);
     }
 
     @Test
@@ -175,7 +181,7 @@ class BookingServiceUnitTest {
                 30,
                 1
         );
-        when(rep.findDeskAvailable(okStart,okStart))
+        when(desk.findDeskAvailable(okStart,okStart))
                 .thenReturn(List.of(d1,d2));
 
         // Action
@@ -184,7 +190,7 @@ class BookingServiceUnitTest {
         // Assert
         assertFalse(result.isEmpty());
         assertThat(result.size(), equalTo(2));
-        verify(rep,times(1)).findDeskAvailable(okStart,okStart);
+        verify(desk,times(1)).findDeskAvailable(okStart,okStart);
         verifyNoMoreInteractions(rep);
     }
 
@@ -200,7 +206,7 @@ class BookingServiceUnitTest {
                 30,
                 1
         );
-        when(rep.findDeskAvailable(okStart,okStart))
+        when(desk.findDeskAvailable(okStart,okStart))
                 .thenReturn(List.of(d1));
 
         // Action
@@ -209,7 +215,7 @@ class BookingServiceUnitTest {
         // Assert
         assertFalse(result.isEmpty());
         assertThat(result.size(), equalTo(1));
-        verify(rep,times(1)).findDeskAvailable(okStart,okStart);
+        verify(desk,times(1)).findDeskAvailable(okStart,okStart);
         verifyNoMoreInteractions(rep);
     }
 
@@ -227,7 +233,7 @@ class BookingServiceUnitTest {
                 1
         );
         Booking expected=new Booking(okStart, okStart, user, desk);
-
+        when(rep.checkUserBookings(user.getId(),okStart,okStart)).thenReturn(List.of());
         when(rep.save(any(Booking.class))).thenReturn(expected);
 
         // Action
@@ -236,7 +242,30 @@ class BookingServiceUnitTest {
         // Assert
         assertNotNull(result);
         assertThat(result,equalTo(expected));
+        verify(rep, times(1)).checkUserBookings(user.getId(),okStart,okStart);
         verify(rep,times(1)).save(any(Booking.class));
+        verifyNoMoreInteractions(rep);
+    }
+
+    @Test
+    void createBookingFailTest(){
+        // When
+        User user = new User("Matteo", "Rosso", "Junior");
+        Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        LocalDateTime okStart=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        Booking expected=new Booking(okStart, okStart, user, desk);
+        when(rep.checkUserBookings(user.getId(),okStart,okStart)).thenReturn(List.of(expected));
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class, ()-> underTest.createBooking(expected));
+        verify(rep,times(1)).checkUserBookings(user.getId(),okStart,okStart);
         verifyNoMoreInteractions(rep);
     }
 
@@ -256,5 +285,29 @@ class BookingServiceUnitTest {
         verify(rep,times(1)).findById(anyLong());
         verify(rep,times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(rep);
+    }
+
+    @Test
+    void checkDateTest(){
+        // When
+        LocalDateTime start=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        LocalDateTime end=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                0
+        );
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class, ()-> underTest.checkTime(start,end));
     }
 }
