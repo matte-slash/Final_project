@@ -116,7 +116,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public Booking updateBooking(long id, Booking b) {
-        log.info("Update booking "+ id);
+        log.info("Update booking "+ id);                    // Booking is remove even if the new one is not valid
         this.deleteBookingById(id);
         return this.createBooking(b);
     }
