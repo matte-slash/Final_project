@@ -1,7 +1,9 @@
 package com.ITCube.Booking.controller;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
+import com.ITCube.Booking.exception.IllegalDateTimeException;
 import com.ITCube.Booking.service.BookingService;
+import com.ITCube.Booking.util.Interval;
 import com.ITCube.Booking.util.LocalDateTimeAdapter;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
@@ -227,4 +229,84 @@ class BookingControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void updateBookingTest() throws Exception {
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        when(service.updateBooking(anyLong(),any(Booking.class))).thenReturn(expected);
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        // Action and Assert
+        mockMvc.perform(MockMvcRequestBuilders.put("/bookings/77")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(expected)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.startDate").value(start));
+    }
+
+    @Test
+    void updateBookingFailTest() throws Exception {
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        doThrow(new IllegalDateTimeException("Invalid date"))
+                .when(service).updateBooking(anyLong(),any(Booking.class));
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        // Action and Assert
+        mockMvc.perform(MockMvcRequestBuilders.put("/bookings/77")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(expected)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void findAllAvailableByRoom() throws Exception {
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk expected=new Desk(1L,"A1",r);
+        String start = "2023-02-21T10:30";
+        String end = "2023-02-21T11:30";
+        Interval interval = new Interval(start,end);
+
+        when(service.findAllAvailableByRoom(77L,interval.getStart(),interval.getEnd()))
+                .thenReturn(List.of(expected));
+
+
+        // Action and Assert
+        mockMvc.perform(MockMvcRequestBuilders
+                                .get("/bookings/desks/77?start=2023-02-21T10:30&end=2023-02-21T11:30")
+                        )
+                .andDo(print())
+                .andExpect(status().isFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].deskName").value(expected.getDeskName()));
+    }
+
 }

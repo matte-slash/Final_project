@@ -242,7 +242,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void createBookingFailTest(){
+    void createBookingFailTimeErrorTest(){
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
@@ -255,6 +255,25 @@ class BookingServiceIntegrationTest {
 
         // Action and Assert
         assertThrows(IllegalDateTimeException.class, ()->underTest.createBooking(expected));
+    }
+
+    @Test
+    void createBookingFailDeskNotAvailableTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u2=new User(2L, "Luca","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking booking=new Booking(st,en,u,d);
+        underTest.createBooking(booking);
+        Booking expected=new Booking(st,en,u2,d);
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class, ()-> underTest.createBooking(expected));
     }
 
     @Test
@@ -304,7 +323,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void updateBookingFailTest(){
+    void updateBookingFailUserAlreadyHasBookingInThatTimeTest(){
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Room r2=new Room(2L, "Stanza 2", "V", 11);

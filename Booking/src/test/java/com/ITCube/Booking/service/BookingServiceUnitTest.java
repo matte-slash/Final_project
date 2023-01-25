@@ -223,7 +223,7 @@ class BookingServiceUnitTest {
     void createBookingTest() {
         // When
         User user = new User("Matteo", "Rosso", "Junior");
-        Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime okStart=LocalDateTime.of(
                 2023,
                 6,
@@ -232,7 +232,8 @@ class BookingServiceUnitTest {
                 30,
                 1
         );
-        Booking expected=new Booking(okStart, okStart, user, desk);
+        Booking expected=new Booking(okStart, okStart, user, d);
+        when(desk.findDeskAvailable(okStart,okStart)).thenReturn(List.of(d));
         when(rep.checkUserBookings(user.getId(),okStart,okStart)).thenReturn(List.of());
         when(rep.save(any(Booking.class))).thenReturn(expected);
 
@@ -242,16 +243,18 @@ class BookingServiceUnitTest {
         // Assert
         assertNotNull(result);
         assertThat(result,equalTo(expected));
+        verify(desk,times(1)).findDeskAvailable(okStart,okStart);
         verify(rep, times(1)).checkUserBookings(user.getId(),okStart,okStart);
         verify(rep,times(1)).save(any(Booking.class));
+        verifyNoMoreInteractions(desk);
         verifyNoMoreInteractions(rep);
     }
 
     @Test
-    void createBookingFailTest(){
+    void createBookingFailBookingAlreadyPresentForUserTest(){
         // When
         User user = new User("Matteo", "Rosso", "Junior");
-        Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime okStart=LocalDateTime.of(
                 2023,
                 6,
@@ -260,13 +263,65 @@ class BookingServiceUnitTest {
                 30,
                 1
         );
-        Booking expected=new Booking(okStart, okStart, user, desk);
+        Booking expected=new Booking(okStart, okStart, user, d);
+        when(desk.findDeskAvailable(okStart,okStart)).thenReturn(List.of(d));
         when(rep.checkUserBookings(user.getId(),okStart,okStart)).thenReturn(List.of(expected));
 
         // Action and Assert
         assertThrows(IllegalDateTimeException.class, ()-> underTest.createBooking(expected));
+        verify(desk,times(1)).findDeskAvailable(okStart,okStart);
         verify(rep,times(1)).checkUserBookings(user.getId(),okStart,okStart);
+        verifyNoMoreInteractions(desk);
         verifyNoMoreInteractions(rep);
+    }
+
+    @Test
+    void createBookingFailDeskNotAvailableTest(){
+        // When
+        User user = new User("Matteo", "Rosso", "Junior");
+        Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        LocalDateTime okStart=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        Booking expected=new Booking(okStart, okStart, user, d);
+        when(desk.findDeskAvailable(okStart,okStart)).thenReturn(List.of());
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class, ()-> underTest.createBooking(expected));
+        verify(desk,times(1)).findDeskAvailable(okStart,okStart);
+        verifyNoMoreInteractions(desk);
+    }
+
+    @Test
+    void createBookingFailTimeError(){
+        // When
+        User user = new User("Matteo", "Rosso", "Junior");
+        Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        LocalDateTime noStart=LocalDateTime.of(
+                2023,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        LocalDateTime noEnd=LocalDateTime.of(
+                2024,
+                6,
+                15,
+                12,
+                30,
+                1
+        );
+        Booking expected=new Booking(noStart,noEnd, user, d);
+
+        // Action and Assert
+        assertThrows(IllegalDateTimeException.class, ()-> underTest.createBooking(expected));
     }
 
     @Test

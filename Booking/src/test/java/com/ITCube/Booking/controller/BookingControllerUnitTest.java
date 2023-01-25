@@ -211,4 +211,50 @@ class BookingControllerUnitTest {
         verify(service, times(1)).deleteBookingById(anyLong());
         verifyNoMoreInteractions(service);
     }
+
+    @Test
+    void findAllAvailableByRoomTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Interval interval=new Interval(start,end);
+        when(service.findAllAvailableByRoom(1L, st, en)).thenReturn(List.of(d));
+
+        // Action
+        List<Desk> result= underTest.findAllAvailableByRoom(1L,interval);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(),equalTo(1));
+        assertThat(result.get(0).getDeskName(),equalTo(d.getDeskName()));
+        verify(service, times(1)).findAllAvailableByRoom(1L,st,en);
+        verifyNoMoreInteractions(service);
+    }
+
+    @Test
+    void updateBookingTest(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso", "Dev");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        when(service.updateBooking(1L,expected)).thenReturn(expected);
+
+        // Action
+        Booking result= underTest.updateBooking(1L,expected);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.getStartDate(), equalTo(st));
+        verify(service,times(1)).updateBooking(1L,expected);
+        verifyNoMoreInteractions(service);
+    }
 }

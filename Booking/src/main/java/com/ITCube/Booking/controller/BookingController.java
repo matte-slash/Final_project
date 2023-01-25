@@ -94,6 +94,4 @@ public class BookingController {
         return service.updateBooking(id,b);
     }
 
-    // TODO aggiungere controllo update in Controller booking
-
 }

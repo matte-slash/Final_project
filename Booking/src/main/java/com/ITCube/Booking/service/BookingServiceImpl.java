@@ -69,8 +69,16 @@ public class BookingServiceImpl implements BookingService{
     public Booking createBooking(Booking booking) {
         log.info("Create Booking "+ booking.toString());
 
+        // Date Validation
         checkTime(booking.getStartDate(), booking.getEndDate());
 
+        // Check if Desk is available
+        List<Desk> available=dRep.findDeskAvailable(booking.getStartDate(),booking.getEndDate());
+        if(!available.contains(booking.getDesk())){
+            throw new IllegalDateTimeException("Desk "+ booking.getDesk().getId()+" is not available");
+        }
+
+        // Check if User already has a booking in that time
         if(rep.checkUserBookings(booking.getUser().getId(), booking.getStartDate(), booking.getEndDate()).isEmpty()){
             return rep.save(booking);
         }else{
@@ -113,6 +121,9 @@ public class BookingServiceImpl implements BookingService{
         return this.createBooking(b);
     }
 
+    /**
+     * DateTime validation
+     */
     public void checkTime(LocalDateTime start, LocalDateTime end){
         if(end.isBefore(start) || start.isBefore(LocalDateTime.now(clock)) || (start.getYear()!=end.getYear()) ||
                 (start.getMonthValue()!=end.getMonthValue()) || (start.getDayOfMonth()!=end.getDayOfMonth()) ||

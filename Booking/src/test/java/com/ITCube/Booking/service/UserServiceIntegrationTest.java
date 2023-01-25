@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("test")
+@ActiveProfiles("usertest")
 class UserServiceIntegrationTest {
 
     @Autowired
@@ -36,7 +35,7 @@ class UserServiceIntegrationTest {
     @Test
     void findAllUsersTest() {
         // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso","Dev");
         underTest.createUser(expected);
 
         // Action
@@ -51,7 +50,7 @@ class UserServiceIntegrationTest {
     @Test
     void findUserByIdTest() {
         // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso","Dev");
         User u=underTest.createUser(expected);
 
         // Action
@@ -66,7 +65,7 @@ class UserServiceIntegrationTest {
     @Test
     void createUserTest() {
         // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso","Dev");
 
         // Action
         User result=underTest.createUser(expected);
@@ -79,7 +78,7 @@ class UserServiceIntegrationTest {
     @Test
     void updateUserTest() {
         // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso","Dev");
         User u_new=new User("Matteo","Rosso", "NUOVO");
         User u=underTest.createUser(expected);
 
@@ -94,7 +93,7 @@ class UserServiceIntegrationTest {
     @Test
     void deleteUserTest() {
         // Arrange
-        User expected=new User("Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso","Dev");
         User u=underTest.createUser(expected);
 
         // Action
