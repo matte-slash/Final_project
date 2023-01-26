@@ -1,6 +1,5 @@
 package com.ITCube.Booking.service;
 
-import com.ITCube.Booking.util.Interval;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 
