@@ -15,8 +15,6 @@ services:
                         context: ./Booking
                         dockerfile: ./Dockerfile
                 image: booking-docker
-                ports:
-                        - "8083:8083"
                 depends_on:
                         - postgres
                         - nginx
