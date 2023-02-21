@@ -1,8 +1,8 @@
 package com.ITCube.Room.service;
 
 import com.ITCube.Data.model.Room;
+import com.ITCube.Data.repository.RoomRepository;
 import com.ITCube.Room.exception.RoomNotFoundException;
-import com.ITCube.Room.repository.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -2,12 +2,12 @@ package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
 import com.ITCube.Booking.exception.IllegalDateTimeException;
-import com.ITCube.Booking.repository.BookingRepository;
-import com.ITCube.Booking.repository.DeskRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.BookingRepository;
+import com.ITCube.Data.repository.DeskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,7 +65,8 @@ class BookingServiceUnitTest {
     @Test
     void findAllBookingsTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime start=LocalDateTime.now();
         LocalDateTime end=LocalDateTime.now();
@@ -86,7 +87,8 @@ class BookingServiceUnitTest {
     @Test
     void findAllBookingsByUserTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findAllBookingsByUser(anyLong())).thenReturn(List.of(expected));
@@ -105,7 +107,8 @@ class BookingServiceUnitTest {
     @Test
     void findAllBookingsByUserAndDeskTest(){
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.query(anyLong(),anyLong())).thenReturn(List.of(expected));
@@ -124,7 +127,8 @@ class BookingServiceUnitTest {
     @Test
     void findAllBookingByDeskTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findAllBookingsByDesk(anyLong())).thenReturn(List.of(expected));
@@ -143,7 +147,8 @@ class BookingServiceUnitTest {
     @Test
     void findBookingByIdTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
@@ -222,7 +227,8 @@ class BookingServiceUnitTest {
     @Test
     void createBookingTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime okStart=LocalDateTime.of(
                 2023,
@@ -253,7 +259,8 @@ class BookingServiceUnitTest {
     @Test
     void createBookingFailBookingAlreadyPresentForUserTest(){
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user =new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime okStart=LocalDateTime.of(
                 2023,
@@ -278,7 +285,8 @@ class BookingServiceUnitTest {
     @Test
     void createBookingFailDeskNotAvailableTest(){
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime okStart=LocalDateTime.of(
                 2023,
@@ -300,7 +308,8 @@ class BookingServiceUnitTest {
     @Test
     void createBookingFailTimeError(){
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk d=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         LocalDateTime noStart=LocalDateTime.of(
                 2023,
@@ -327,7 +336,8 @@ class BookingServiceUnitTest {
     @Test
     void deleteBookingByIdTest() {
         // When
-        User user = new User("Matteo", "Rosso", "Junior");
+        User user = new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         Desk desk=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
         Booking expected=new Booking(LocalDateTime.now(), LocalDateTime.now(), user, desk);
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));

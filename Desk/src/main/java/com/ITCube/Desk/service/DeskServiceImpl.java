@@ -1,14 +1,15 @@
 package com.ITCube.Desk.service;
 
 import com.ITCube.Data.model.Desk;
+import com.ITCube.Data.model.Room;
+import com.ITCube.Data.repository.DeskRepository;
+import com.ITCube.Data.repository.RoomRepository;
 import com.ITCube.Desk.exception.DeskNotFoundException;
-import com.ITCube.Desk.repository.DeskRepository;
-import lombok.RequiredArgsConstructor;
+import com.ITCube.Desk.exception.RoomNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,14 @@ import java.util.List;
 @Service
 public class DeskServiceImpl implements DeskService {
 
-    private DeskRepository rep;
+    private final DeskRepository rep;
+
+    private final RoomRepository roomRep;
 
     @Autowired
-    public DeskServiceImpl(DeskRepository rep) {
+    public DeskServiceImpl(DeskRepository rep, RoomRepository roomRep) {
         this.rep = rep;
+        this.roomRep = roomRep;
     }
 
     @Override
@@ -50,6 +54,12 @@ public class DeskServiceImpl implements DeskService {
     @Override
     public Desk createDesk(Desk desk) {
         log.info("Save new desk");
+        long room_id=desk.getRoom().getId();
+        Room r=roomRep.findById(room_id)
+                .orElseThrow(()-> new RoomNotFoundException("Room "+ room_id+" not found"));
+        if(!r.equals(desk.getRoom())){
+            throw new RoomNotFoundException("Room insert is wrong");
+        }
         return rep.save(desk);
     }
 

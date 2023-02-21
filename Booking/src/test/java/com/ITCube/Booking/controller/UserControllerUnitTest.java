@@ -31,7 +31,8 @@ class UserControllerUnitTest {
     @Test
     void findAllUserTest() {
         // Arrange
-        User expected=new User("Matteo", "Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.findAllUsers()).thenReturn(List.of(expected));
 
         // Action
@@ -48,7 +49,8 @@ class UserControllerUnitTest {
     @Test
     void findUserByIdTest() {
         // Arrange
-        User expected=new User("Matteo", "Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.findUserById(anyLong())).thenReturn(expected);
 
         // Action
@@ -64,7 +66,8 @@ class UserControllerUnitTest {
     @Test
     void createNewUserTest() {
         // Arrange
-        User expected=new User("Matteo", "Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.createUser(expected)).thenReturn(expected);
 
         // Action
@@ -93,7 +96,8 @@ class UserControllerUnitTest {
     @Test
     void updateUserTest() {
         // Arrange
-        User expected=new User("Matteo", "Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.updateUser(1L,expected)).thenReturn(expected);
 
         // Action

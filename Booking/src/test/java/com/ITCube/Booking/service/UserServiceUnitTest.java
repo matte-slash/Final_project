@@ -1,8 +1,8 @@
 package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.UserNotFoundException;
-import com.ITCube.Booking.repository.UserRepository;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +32,8 @@ class UserServiceUnitTest {
     @Test
     void findAllUsersTest() {
         // When
-        User expected=new User("Matteo","Rosso","Junior");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
         when(rep.findAll()).thenReturn(List.of(expected));
 
         // Action
@@ -49,7 +50,8 @@ class UserServiceUnitTest {
     @Test
     void findUserByIdTest() {
         // When
-        User expected=new User("Matteo","Rosso","Junior");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
 
         // Action
@@ -75,7 +77,8 @@ class UserServiceUnitTest {
     @Test
     void createUserTest() {
         // When
-        User expected=new User("Matteo","Rosso","Junior");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
         when(rep.save(any(User.class))).thenReturn(expected);
 
         // Action
@@ -90,8 +93,10 @@ class UserServiceUnitTest {
     @Test
     void updateUserTest() {
         // When
-        User expected=new User("Matteo","Rosso","Junior");
-        User new_user = new User("Luca", "Rosso", "Junior");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
+        User new_user = new User("Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         when(rep.save(any(User.class))).thenReturn(new_user);
 
@@ -107,7 +112,8 @@ class UserServiceUnitTest {
     @Test
     void deleteUserTest() {
         // When
-        User expected=new User("Matteo","Rosso","Junior");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
         when(rep.findById(anyLong())).thenReturn(Optional.of(expected));
         doNothing().when(rep).deleteById(anyLong());
 

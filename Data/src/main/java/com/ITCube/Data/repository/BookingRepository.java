@@ -1,4 +1,4 @@
-package com.ITCube.Booking.repository;
+package com.ITCube.Data.repository;
 
 import com.ITCube.Data.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;

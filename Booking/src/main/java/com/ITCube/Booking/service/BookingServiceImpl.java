@@ -2,10 +2,10 @@ package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
 import com.ITCube.Booking.exception.IllegalDateTimeException;
-import com.ITCube.Booking.repository.BookingRepository;
-import com.ITCube.Booking.repository.DeskRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
+import com.ITCube.Data.repository.BookingRepository;
+import com.ITCube.Data.repository.DeskRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

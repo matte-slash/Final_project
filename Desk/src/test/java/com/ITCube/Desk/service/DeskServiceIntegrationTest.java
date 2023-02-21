@@ -2,7 +2,7 @@ package com.ITCube.Desk.service;
 
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
-import com.ITCube.Desk.repository.DeskRepository;
+import com.ITCube.Data.repository.DeskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

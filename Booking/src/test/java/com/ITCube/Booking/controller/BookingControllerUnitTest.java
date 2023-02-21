@@ -39,7 +39,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -63,7 +64,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -87,7 +89,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -111,7 +114,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -135,7 +139,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -181,7 +186,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -240,7 +246,8 @@ class BookingControllerUnitTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";

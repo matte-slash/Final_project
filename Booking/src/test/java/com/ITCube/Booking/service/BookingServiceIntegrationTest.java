@@ -1,11 +1,11 @@
 package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.IllegalDateTimeException;
-import com.ITCube.Booking.repository.BookingRepository;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.BookingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +43,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -64,18 +65,20 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u1=new User(1L,"Matteo","Rosso", "Dev");
-        User u2=new User(2L,"Luca", "Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u1=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u1,d);
         Booking b=underTest.createBooking(expected);
 
-        start="2023-02-22T10:30";
+        start="2024-02-22T10:30";
         st = LocalDateTime.parse(start);
-        end = "2023-02-22T11:30";
+        end = "2024-02-22T11:30";
         en = LocalDateTime.parse(end);
         Booking wrong=new Booking(st, en, u2, b.getDesk());
         underTest.createBooking(wrong);
@@ -95,10 +98,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -117,10 +121,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -140,10 +145,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -163,10 +169,11 @@ class BookingServiceIntegrationTest {
         Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L,"C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -187,10 +194,11 @@ class BookingServiceIntegrationTest {
         Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -210,10 +218,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -227,10 +236,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
 
@@ -246,10 +256,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(en,st,u,d);
 
@@ -262,11 +273,13 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        User u2=new User(2L, "Luca","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking booking=new Booking(st,en,u,d);
         underTest.createBooking(booking);
@@ -281,10 +294,11 @@ class BookingServiceIntegrationTest {
         // Arrange
         Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
         Desk d=new Desk(1L,"A1",r);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking expected=new Booking(st,en,u,d);
         underTest.createBooking(expected);
@@ -305,10 +319,11 @@ class BookingServiceIntegrationTest {
         Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking booking=new Booking(st,en,u,d);
         underTest.createBooking(booking);
@@ -329,16 +344,17 @@ class BookingServiceIntegrationTest {
         Room r2=new Room(2L, "Stanza 2", "V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        String start = "2023-02-21T10:30";
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        String start = "2024-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
-        String end = "2023-02-21T11:30";
+        String end = "2024-02-21T11:30";
         LocalDateTime en = LocalDateTime.parse(end);
         Booking booking=new Booking(st,en,u,d);
         underTest.createBooking(booking);
 
-        LocalDateTime s2=LocalDateTime.parse("2023-03-21T10:30");
-        LocalDateTime e2=LocalDateTime.parse("2023-03-21T11:30");
+        LocalDateTime s2=LocalDateTime.parse("2024-03-21T10:30");
+        LocalDateTime e2=LocalDateTime.parse("2024-03-21T11:30");
 
         Booking booking2=new Booking(s2,e2,u,d2);
         underTest.createBooking(booking2);

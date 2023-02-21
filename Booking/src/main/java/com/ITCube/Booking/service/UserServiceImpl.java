@@ -1,8 +1,8 @@
 package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.UserNotFoundException;
-import com.ITCube.Booking.repository.UserRepository;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
         User result=rep.findById(id).orElseThrow(()->new UserNotFoundException("User "+id+" not found"));
         result.setFirstName(user.getFirstName());
         result.setLastName(user.getLastName());
-        result.setRole(user.getRole());
+        result.setAuthority(user.getAuthority());
         return rep.save(result);
     }
 

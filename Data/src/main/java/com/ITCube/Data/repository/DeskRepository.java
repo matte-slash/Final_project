@@ -1,4 +1,4 @@
-package com.ITCube.Booking.repository;
+package com.ITCube.Data.repository;
 
 import com.ITCube.Data.model.Desk;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +11,13 @@ import java.util.List;
 /**
  * @author Matteo Rosso
  */
+
 @Repository
 public interface DeskRepository extends JpaRepository<Desk,Long> {
+
+    @Query(value= "select * from desk as d "
+            + "where d.room_id = ?1 ", nativeQuery = true)
+    List<Desk> findDeskByRoom(long roomId);
 
     @Query(value = "select * from desk as d "
             + "where d.id not in "
@@ -22,5 +27,6 @@ public interface DeskRepository extends JpaRepository<Desk,Long> {
             + "or (b.end_date BETWEEN ?1 and  ?2) "
             + ")", nativeQuery = true)
     List<Desk> findDeskAvailable(LocalDateTime start, LocalDateTime end);
+
 
 }

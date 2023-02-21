@@ -2,9 +2,11 @@ package com.ITCube.Booking.repository;
 
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
+import com.ITCube.Data.repository.DeskRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @DataJpaTest
 @ActiveProfiles("test")
+@EnableJpaRepositories(basePackages = "com.ITCube.Data.repository")
 class DeskRepositoryTest {
 
     @Autowired

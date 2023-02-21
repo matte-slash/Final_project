@@ -1,7 +1,7 @@
 package com.ITCube.Booking.service;
 
-import com.ITCube.Booking.repository.UserRepository;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,8 @@ class UserServiceIntegrationTest {
     @Test
     void findAllUsersTest() {
         // Arrange
-        User expected=new User(1L,"Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         underTest.createUser(expected);
 
         // Action
@@ -50,7 +51,8 @@ class UserServiceIntegrationTest {
     @Test
     void findUserByIdTest() {
         // Arrange
-        User expected=new User(1L,"Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         User u=underTest.createUser(expected);
 
         // Action
@@ -65,7 +67,8 @@ class UserServiceIntegrationTest {
     @Test
     void createUserTest() {
         // Arrange
-        User expected=new User(1L,"Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
 
         // Action
         User result=underTest.createUser(expected);
@@ -78,8 +81,10 @@ class UserServiceIntegrationTest {
     @Test
     void updateUserTest() {
         // Arrange
-        User expected=new User(1L,"Matteo","Rosso","Dev");
-        User u_new=new User("Matteo","Rosso", "NUOVO");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u_new=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "USER");
         User u=underTest.createUser(expected);
 
         // Action
@@ -87,13 +92,14 @@ class UserServiceIntegrationTest {
 
         // Assert
         assertNotNull(result);
-        assertThat(result.getRole(),equalTo("NUOVO"));
+        assertThat(result.getAuthority(),equalTo("USER"));
     }
 
     @Test
     void deleteUserTest() {
         // Arrange
-        User expected=new User(1L,"Matteo","Rosso","Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         User u=underTest.createUser(expected);
 
         // Action

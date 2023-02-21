@@ -1,9 +1,8 @@
 package com.ITCube.Room.service;
 
 import com.ITCube.Data.model.Room;
+import com.ITCube.Data.repository.RoomRepository;
 import com.ITCube.Room.exception.RoomNotFoundException;
-import com.ITCube.Room.repository.RoomRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService{
 
-    private RoomRepository rep;
+    private final RoomRepository rep;
 
     @Autowired
     public RoomServiceImpl(RoomRepository rep) {
@@ -29,7 +28,7 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public List<Room> findAllRooms() {
         log.info("Find All Rooms");
-        List<Room> result=new ArrayList<Room>();
+        List<Room> result= new ArrayList<>();
         rep.findAll().forEach(result::add);
         return result;
     }

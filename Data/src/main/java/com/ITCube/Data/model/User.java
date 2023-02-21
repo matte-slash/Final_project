@@ -1,5 +1,7 @@
 package com.ITCube.Data.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,29 +13,41 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="first_name", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name="last_name", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name="role", nullable = false)
-    private String role;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    @Column(name = "authority", nullable = false)
+    private String authority;
 
 
-    public User(){}
-
-    public User(String firstName, String lastName, String role){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
+    public User() {
     }
 
-    public User(long id, String firstName, String lastName, String role) {
+    public User(String firstName, String lastName, String email, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.authority = role;
+    }
+
+    public User(long id, String firstName, String lastName, String email, String password, String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+        this.email = email;
+        this.password = password;
+        this.authority = role;
     }
 
     @Override
@@ -42,7 +56,9 @@ public class User {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", authority='" + authority + '\'' +
                 '}';
     }
 
@@ -70,11 +86,29 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getRole() {
-        return role;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 }
+
+

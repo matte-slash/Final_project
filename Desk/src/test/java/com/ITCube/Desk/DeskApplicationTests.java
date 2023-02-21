@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@EntityScan(basePackages = "com.ITCube.Data.model")
+@EntityScan(basePackages = "com.ITCube.Data")
 class DeskApplicationTests {
 
 	@Test

@@ -51,7 +51,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DeskNotFoundException.class)
-    public ResponseEntity<Object> handleCompanyNotFoundException(DeskNotFoundException ex,
+    public ResponseEntity<Object> handleDeskNotFoundException(DeskNotFoundException ex,
+                                                                 WebRequest request) {
+
+        Map<String, Object> body = new HashMap<String, Object>();
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<Object> handleRoomNotFoundException(RoomNotFoundException ex,
                                                                  WebRequest request) {
 
         Map<String, Object> body = new HashMap<String, Object>();

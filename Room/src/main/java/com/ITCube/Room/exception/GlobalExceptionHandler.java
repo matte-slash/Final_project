@@ -51,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RoomNotFoundException.class)
-    public ResponseEntity<Object> handleCompanyNotFoundException(RoomNotFoundException ex,
+    public ResponseEntity<Object> handleRoomNotFoundException(RoomNotFoundException ex,
                                                                  WebRequest request) {
 
         Map<String, Object> body = new HashMap<String, Object>();

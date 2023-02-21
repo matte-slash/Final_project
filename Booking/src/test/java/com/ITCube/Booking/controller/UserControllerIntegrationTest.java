@@ -42,7 +42,8 @@ class UserControllerIntegrationTest {
     @Test
     void findAllUserTest() throws Exception {
         // Arrange
-        User expected=new User("Matteo", "Rosso", "Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.findAllUsers()).thenReturn(List.of(expected));
 
         // Action and Assert
@@ -52,14 +53,15 @@ class UserControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()").value(1))
                 .andExpect(jsonPath("$[0].firstName").value(expected.getFirstName()))
-                .andExpect(jsonPath("$[0].role").value(expected.getRole()));
+                .andExpect(jsonPath("$[0].authority").value(expected.getAuthority()));
     }
 
 
     @Test
     void findUserByIdTest() throws Exception {
         // Arrange
-        User expected=new User("Matteo", "Rosso", "Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.findUserById(anyLong())).thenReturn(expected);
 
         // Action and Assert
@@ -73,7 +75,8 @@ class UserControllerIntegrationTest {
     @Test
     void createNewUserTest() throws Exception {
         // Arrange
-        User expected=new User("Matteo", "Rosso", "Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.createUser(any(User.class))).thenReturn(expected);
         Gson gson = new Gson();
 
@@ -115,7 +118,8 @@ class UserControllerIntegrationTest {
     @Test
     void updateUserTest() throws Exception {
         // Arrange
-        User expected=new User("Matteo", "Rosso", "Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.updateUser(anyLong(),any(User.class))).thenReturn(expected);
         Gson gson = new Gson();
 
@@ -132,7 +136,8 @@ class UserControllerIntegrationTest {
     @Test
     void updateUserFailTest() throws Exception {
         // Arrange
-        User expected=new User("Matteo", "Rosso", "Dev");
+        User expected=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         when(service.updateUser(anyLong(),any(User.class)))
                 .thenThrow(UserNotFoundException.class);
 

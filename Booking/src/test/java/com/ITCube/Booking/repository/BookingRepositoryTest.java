@@ -4,9 +4,11 @@ import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.model.User;
+import com.ITCube.Data.repository.BookingRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @DataJpaTest
 @ActiveProfiles("test")
+@EnableJpaRepositories(basePackages = "com.ITCube.Data.repository")
 class BookingRepositoryTest {
     @Autowired
     public BookingRepository underTest;
@@ -32,7 +35,8 @@ class BookingRepositoryTest {
         Room r2=new Room(2L, "Stanza 2","V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -58,8 +62,10 @@ class BookingRepositoryTest {
         Room r2=new Room(2L, "Stanza 2","V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        User u2=new User(2L, "Luca", "Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -85,7 +91,8 @@ class BookingRepositoryTest {
         Room r2=new Room(2L, "Stanza 2","V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -112,8 +119,10 @@ class BookingRepositoryTest {
         Room r2=new Room(2L, "Stanza 2","V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        User u2=new User(2L, "Luca", "Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
@@ -141,8 +150,10 @@ class BookingRepositoryTest {
         Room r2=new Room(2L, "Stanza 2","V", 11);
         Desk d=new Desk(1L,"A1",r);
         Desk d2=new Desk(2L, "C1", r2);
-        User u=new User(1L,"Matteo","Rosso", "Dev");
-        User u2=new User(2L, "Luca", "Rosso", "Dev");
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
         String start = "2023-02-21T10:30";
         LocalDateTime st = LocalDateTime.parse(start);
         String end = "2023-02-21T11:30";
