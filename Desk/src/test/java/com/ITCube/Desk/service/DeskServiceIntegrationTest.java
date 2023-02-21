@@ -3,6 +3,7 @@ package com.ITCube.Desk.service;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.repository.DeskRepository;
+import com.ITCube.Data.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class DeskServiceIntegrationTest {
 
     @Autowired
     private DeskRepository rep;
+    @Autowired
+    private RoomRepository roomRep;
 
     @BeforeEach
     void setUp() {

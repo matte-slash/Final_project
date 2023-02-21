@@ -3,6 +3,7 @@ package com.ITCube.Desk.service;
 import com.ITCube.Data.model.Desk;
 import com.ITCube.Data.model.Room;
 import com.ITCube.Data.repository.DeskRepository;
+import com.ITCube.Data.repository.RoomRepository;
 import com.ITCube.Desk.exception.DeskNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ import static org.mockito.Mockito.*;
 public class DeskServiceUnitTest {
     @Mock
     private DeskRepository rep;
+    @Mock
+    private RoomRepository roomRep;
     @InjectMocks
     private DeskServiceImpl underTest;
 
@@ -94,7 +97,9 @@ public class DeskServiceUnitTest {
     @Test
     void createDeskTest(){
         // When
-        Desk expected=new Desk("A1", new Room("Stanza 1", "Via Roma 15", 99));
+        Room r=new Room(1L,"Stanza 1", "Via Roma 15", 99);
+        Desk expected=new Desk("A1", r);
+        when(roomRep.findById(1L)).thenReturn(Optional.of(r));
         when(rep.save(any(Desk.class))).thenReturn(expected);
 
         // Action
