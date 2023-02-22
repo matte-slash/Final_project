@@ -173,4 +173,31 @@ class BookingRepositoryTest {
         assertThat(result.size(), equalTo(0));
     }
 
+    @Test
+    void findAllBookingByDeskAndDate(){
+        // Arrange
+        Room r=new Room(1L, "Stanza 1", "Via Roma 11", 99);
+        Room r2=new Room(2L, "Stanza 2","V", 11);
+        Desk d=new Desk(1L,"A1",r);
+        User u=new User(1L,"Matteo","Rosso",
+                "m@gmail.com","password", "ADMIN");
+        User u2=new User(2L, "Luca", "Rosso",
+                "l@gmail.com", "password", "USER");
+        String start = "2023-02-21T10:30";
+        LocalDateTime st = LocalDateTime.parse(start);
+        String end = "2023-02-21T11:30";
+        LocalDateTime en = LocalDateTime.parse(end);
+        Booking expected=new Booking(st,en,u,d);
+        Booking b2=new Booking(st, en,u2,d);
+        underTest.save(expected);
+        underTest.save(b2);
+
+        // Action
+        List<Booking> result= underTest.concurrentBookings(1L,st,en);
+
+        // Assert
+        assertNotNull(result);
+        assertThat(result.size(), equalTo(2));
+    }
+
 }

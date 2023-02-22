@@ -1,5 +1,6 @@
 package com.ITCube.Booking.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
-        Map<String, Object> body = new HashMap<String, Object>();
+        Map<String, Object> body = new HashMap<>();
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -42,6 +43,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
                                                                      WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
+                                                                        WebRequest request) {
 
         Map<String, Object> body = new HashMap<String, Object>();
         body.put("message", ex.getMessage());
@@ -77,6 +89,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new HashMap<String, Object>();
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(ConcurrentBookingCreationException.class)
+    public ResponseEntity<Object> handleConcurrentBookingCreationException(ConcurrentBookingCreationException ex,
+                                                                WebRequest request) {
+
+        Map<String, Object> body = new HashMap<String, Object>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
 
     }
 }

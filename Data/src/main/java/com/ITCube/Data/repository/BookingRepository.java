@@ -33,4 +33,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             + "or (b.end_date BETWEEN ?2 and ?3)) ", nativeQuery = true)
     List<Booking> checkUserBookings(Long user, LocalDateTime start, LocalDateTime end);
 
+
+    @Query(value = "select * from booking as b "
+            + "where b.desk_id = ?1 AND ((b.start_date BETWEEN ?2 and ?3)  "
+            + "or (b.end_date BETWEEN ?2 and ?3)) ", nativeQuery = true)
+    List<Booking> concurrentBookings(Long desk, LocalDateTime start, LocalDateTime end);
+
 }

@@ -1,6 +1,7 @@
 package com.ITCube.Booking.service;
 
 import com.ITCube.Booking.exception.BookingNotFoundException;
+import com.ITCube.Booking.exception.ConcurrentBookingCreationException;
 import com.ITCube.Booking.exception.IllegalDateTimeException;
 import com.ITCube.Data.model.Booking;
 import com.ITCube.Data.model.Desk;
@@ -80,11 +81,25 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if User already has a booking in that time
         if(rep.checkUserBookings(booking.getUser().getId(), booking.getStartDate(), booking.getEndDate()).isEmpty()){
-            return rep.save(booking);
+            booking=rep.save(booking);
         }else{
             throw new IllegalDateTimeException("User "+
                     booking.getUser().getId()+ " already has a booking for that time");
         }
+
+        // Check if there are concurrent Bookings
+        List<Booking> concurrent=rep.concurrentBookings(booking.getDesk().getId(),
+                booking.getStartDate(),booking.getEndDate());
+        for(Booking b: concurrent){
+            if(b.getCreationDate().isBefore(booking.getCreationDate())){
+                log.info("This Booking is concurrent");
+
+                rep.deleteById(booking.getId());
+                throw new ConcurrentBookingCreationException("Concurrent bookings saved");
+            }
+        }
+
+        return booking;
     }
 
     @Override

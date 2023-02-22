@@ -1,8 +1,10 @@
 package com.ITCube.Data.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 /**
@@ -15,6 +17,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @JsonIgnore
+    private LocalDateTime creationDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime startDate;
@@ -38,17 +43,31 @@ public class Booking {
         this.endDate = endDate;
         this.user = user;
         this.desk = desk;
+        this.creationDate= LocalDateTime.now();
+    }
+
+    public Booking(LocalDateTime creationDate, LocalDateTime startDate, LocalDateTime endDate, User user, Desk desk) {
+        this.creationDate = creationDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.user = user;
+        this.desk = desk;
     }
 
     @Override
     public String toString() {
         return "Booking{" +
                 "id=" + id +
+                ", creationDate=" + creationDate +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", user=" + user +
                 ", desk=" + desk +
                 '}';
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
     public long getId() {
